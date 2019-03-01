@@ -5,7 +5,7 @@ $queries = array();
 array_push($queries, "
 CREATE TABLE `bookmarks` (
   `user_id` int(11) UNSIGNED NOT NULL,
-  `book_id` int(11) NOT NULL,
+  `book_id` int(11) UNSIGNED NOT NULL,
   `location` varchar(64) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 ");

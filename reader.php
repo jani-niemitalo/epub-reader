@@ -32,7 +32,7 @@
         var prev = document.getElementById("prev");
         var currentPage = document.getElementById("current-percent");
         var book = ePub("<?php echo $path;?>");
-        var rendition = book.renderTo("area", { method: "continuous", width: "80vw", display: "block", color: "#fff" });
+        var rendition = book.renderTo("area", { flow: "scrolled-doc", width: "85vw", height: "97vh", display: "block", color: "#fff" });
         var loc = "";
         var displayed;
         var xhttp2;
@@ -41,10 +41,10 @@
             if (this.readyState == 4 && this.status == 200) {
                 loc = this.responseText;
                 if (loc == "") {
-                    console.log(loc);
+                    console.log("Line 44 " + loc);
                     displayed = rendition.display();
                 }else {
-                    console.log(loc);
+                    console.log("Line 47 " + loc);
                     displayed = rendition.display(loc);
                 }
 
@@ -53,7 +53,8 @@
         xhttp2.open("GET", "bookmark.php?id=<?php echo $book_id;?>&location=", true);
         xhttp2.send();
         //console.log(loc);
-        //var displayed = rendition.display(loc);
+        console.log("Line 56 " + loc);
+        //displayed = rendition.display(loc);
 
 
 
@@ -77,23 +78,33 @@
 				rendition.next();
 			}
 		};
-        rendition.on('relocated', function(location){
-            //console.log(rendition.currentLocation().start.cfi);
-            var xhttp;
-            xhttp = new XMLHttpRequest();
-            xhttp.onreadystatechange = function() {
-                if (this.readyState == 4 && this.status == 200) {
-                    console.log(this.responseText);
-                }
-            };
-            xhttp.open("GET", "bookmark.php?id=<?php echo $book_id;?>&location="+rendition.currentLocation().start.cfi, true);
-            xhttp.send();
-        });
-
-        rendition.themes.register("dark", "styles.css");
-        rendition.themes.select("dark");
         rendition.on("keyup", keyListener);
         document.addEventListener("keyup", keyListener, false);
+
+
+
+        book.ready.then(function(){
+            displayed.then(function(){
+                rendition.themes.register("dark", "styles.css");
+                rendition.themes.select("dark");
+            });
+            rendition.on('relocated', function(location){
+                console.log("Line 81 " + rendition.currentLocation().start.cfi);
+                var xhttp;
+                xhttp = new XMLHttpRequest();
+                xhttp.onreadystatechange = function() {
+                    if (this.readyState == 4 && this.status == 200) {
+                        console.log("Line 86 " + this.responseText);
+                    }
+                };
+                console.log("Line 89 Sending location " + rendition.currentLocation().start.cfi + " To database ")
+                xhttp.open("GET", "bookmark.php?id=<?php echo $book_id;?>&location="+rendition.currentLocation().start.cfi, true);
+                xhttp.send();
+            });
+
+        });
+
+
     </script>
 </body>
 </html>

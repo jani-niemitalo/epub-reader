@@ -45,10 +45,8 @@
 
 .dark {
 	background: #333;
-	color: #fff;
-    -webkit-text-stroke-width: 0.02vw;
-    -webkit-text-stroke-color: black;
-    font-size: 140%;
+	color: #fff !important;
+    //font-size: 140% !important;
 }
 
 #area{

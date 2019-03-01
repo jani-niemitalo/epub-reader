@@ -13,7 +13,7 @@ if ($location == "") {
 $sqlInsert= "REPLACE INTO bookmarks (user_id, book_id, location) VALUES ($user_id, $book_id, '" . $location . "')";
 $sqlResult = $conn->query($sqlInsert);
 if ($sqlResult){
-    echo "[OK]";
+    echo "[OK]". $sqlInsert;
 }
 else{
     echo "[ERR]";
