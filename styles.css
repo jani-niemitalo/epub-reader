@@ -45,7 +45,7 @@
 
 .dark {
 	background: #333;
-	color: #fff
+	color: #fff;
     -webkit-text-stroke-width: 0.02vw;
     -webkit-text-stroke-color: black;
     font-size: 140%;
