@@ -1,19 +1,22 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Page Title</title>
+<?php
+require_once("mysqlConnection.php");
+$book_id = mysqli_real_escape_string($conn, $_GET['id']);
+$booksQuery = "SELECT * FROM books WHERE id=$book_id";
+$booksQueryResult = $conn->query($booksQuery);
+$db_book = $booksQueryResult->fetch_assoc();
+
+?>
+<title><?php echo $db_book["title"];?></title>
 <meta charset="utf-8"/>
 <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <?php
         require_once('epub.php');
-        require_once("mysqlConnection.php");
         require_once("cover.php");
-        $book_id = mysqli_real_escape_string($conn, $_GET['id']);
-        $booksQuery = "SELECT * FROM books WHERE id=$book_id";
-        $booksQueryResult = $conn->query($booksQuery);
-        $db_book = $booksQueryResult->fetch_assoc();
         $epub = new EPub($db_book["path"]);
 
         if ($db_book["tn_path"] == "")

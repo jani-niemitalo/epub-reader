@@ -1,7 +1,15 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Page Title</title>
+<?php
+require_once("mysqlConnection.php");
+$book_id = mysqli_real_escape_string($conn, $_GET['id']);
+$result = $conn->query("SELECT * FROM books WHERE id=$book_id")->fetch_assoc();
+$path = $result["path"];
+$title = $result["title"]
+
+?>
+<title><?php echo $title;?></title>
 <script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/detect_swipe/2.1.1/jquery.detect_swipe.min.js"></script>
 <meta charset="utf-8"/>
@@ -39,19 +47,6 @@
 </style>
 </head>
 <body>
-    <?php
-        require_once('epub.php');
-        require_once("mysqlConnection.php");
-        $book_id = mysqli_real_escape_string($conn, $_GET['id']);
-        //$booksQuery = "SELECT * FROM books WHERE id=$book_id";
-        //$booksQueryResult = $conn->query("SELECT * FROM books WHERE id=$book_id");
-        $result = $conn->query("SELECT * FROM books WHERE id=$book_id")->fetch_assoc();
-        $path = $result["path"];
-        //echo $path;
-
-
-    ?>
-
     <script src="epub.min.js"></script>
     <script src="jszip-3.1.5/dist/jszip.min.js"></script>
     <div class="book_view_container">

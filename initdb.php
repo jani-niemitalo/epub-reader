@@ -6,7 +6,8 @@ array_push($queries, "
 CREATE TABLE `bookmarks` (
   `user_id` int(11) UNSIGNED NOT NULL,
   `book_id` int(11) UNSIGNED NOT NULL,
-  `location` varchar(64) NOT NULL
+  `location` varchar(64) NOT NULL,
+  `ts` bigint UNSIGNED
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 ");
 array_push($queries, "
@@ -37,10 +38,15 @@ ALTER TABLE `bookmarks`
   ADD KEY `book_bookmark` (`book_id`);
 ");
 array_push($queries, "
+ALTER TABLE `bookmarks`
+  MODIFY COLUMN ts BIGINT UNSIGNED;
+");
+array_push($queries, "
 ALTER TABLE `books`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `id` (`id`);
 ");
+
 array_push($queries, "
 ALTER TABLE `users`
   ADD PRIMARY KEY (`id`),

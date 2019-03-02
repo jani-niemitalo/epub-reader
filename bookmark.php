@@ -9,14 +9,15 @@ if ($location == "") {
     echo $location;
     return;
 }
-
-$sqlInsert= "REPLACE INTO bookmarks (user_id, book_id, location) VALUES ($user_id, $book_id, '" . $location . "')";
+$time = time();
+echo $time;
+$sqlInsert= "REPLACE INTO bookmarks (user_id, book_id, location, ts) VALUES ($user_id, $book_id, '" . $location . "', $time)";
 $sqlResult = $conn->query($sqlInsert);
 if ($sqlResult){
     echo "[OK]". $sqlInsert;
 }
 else{
-    echo "[ERR]";
+    echo "[ERR]". $sqlInsert;
     echo $conn->error;
 }
 
