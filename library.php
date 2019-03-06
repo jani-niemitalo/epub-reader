@@ -42,8 +42,13 @@ function parse() {
                       WHERE user_id = $user_id
                       ORDER BY ts DESC";
     $latest = $conn->query($latest_query);
-    while($row2 = $latest->fetch_assoc()) {
-      echo coverFN($row2, "reader.php?id=");
+    if ($latest->num_rows > 0) {
+      while($row2 = $latest->fetch_assoc()) {
+        echo coverFN($row2, "reader.php?id=");
+      }
+    }
+    else {
+      echo coverFN($latest->fetch_assoc());
     }
     ?>
 </div>
