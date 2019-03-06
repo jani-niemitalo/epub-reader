@@ -47,9 +47,6 @@ function parse() {
         echo coverFN($row2, "reader.php?id=");
       }
     }
-    else {
-      echo coverFN($latest->fetch_assoc());
-    }
     ?>
 </div>
 <div class="separator">
