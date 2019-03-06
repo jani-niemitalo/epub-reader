@@ -2,13 +2,11 @@ version: '2'
 services:
     front:
         build: .
-        container_name: topkekapp
+        container_name: epub-reader
         volumes:
             - .:/var/www/html/
         ports:
             - "8888:80"
-        labels:
-            - traefik.enable=true
         depends_on:
             - mysql
     mysql:

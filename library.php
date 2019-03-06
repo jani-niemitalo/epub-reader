@@ -1,6 +1,10 @@
 <!DOCTYPE html>
 <html>
 <head>
+  <?php
+  require_once("mysqlConnection.php");
+  require_once("cover.php");
+  ?>
 <title>Epub-Reader - <?php require("version.txt")?></title>
 <meta charset="utf-8"/>
 <link rel="stylesheet" href="styles.css">
@@ -19,25 +23,37 @@ function parse() {
 </script>
 </head>
 <body>
+  <div id="header">
+  <button id="parseButton" type="button" style="
+  height: 100%;" onclick="parse()">Change Content</button>
+  <div id="result" style="color: #fff; height: 100%;">
+  </div>
+  </div>
 
-<div id="header">
-<button id="parseButton" type="button" style="
-height: 100%;" onclick="parse()">Change Content</button>
-<div id="result" style="color: #fff; height: 100%;">
-</div>
-</div>
 <div style="height: 50px;">
 
 </div>
-
+<div class="grid" id="recent_lib"">
+  <?php
+    $user_id = "123";
+    $latest_query = " SELECT * FROM bookmarks
+                      INNER JOIN books
+                      ON bookmarks.book_id = books.id
+                      WHERE user_id = $user_id
+                      ORDER BY ts DESC";
+    $latest = $conn->query($latest_query);
+    while($row2 = $latest->fetch_assoc()) {
+      echo coverFN($row2, "reader.php?id=");
+    }
+    ?>
+</div>
+<div class="separator">
+  <h1 class="separator_t"> All Books </h1>
+</div>
 <div class="grid">
 
 
 <?php
-require_once("mysqlConnection.php");
-require_once("cover.php");
-
-
 $booksQuery = "SELECT * FROM books";
 $booksQueryResult = $conn->query($booksQuery);
 

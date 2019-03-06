@@ -12,7 +12,10 @@ $title = $result["title"]
 <title><?php echo $title;?></title>
 <script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/detect_swipe/2.1.1/jquery.detect_swipe.min.js"></script>
-<meta charset="utf-8"/>
+<meta charset="utf-8"
+      name='viewport'
+      content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0'
+/>
 <link rel="stylesheet" href="styles.css">
 <style type="text/css">
   body {
@@ -33,15 +36,11 @@ $title = $result["title"]
     and (max-device-width : 667px) {
       #viewer {
         height: 96.5%;
-        flow: scrolled-doc;
 
       }
-      #viewer iframe {
-        flow: scrolled-doc;
-      }
       .arrow {
-        position: inherit;
-        display: none;
+        //position: inherit;
+        //display: none;
       }
   }
 </style>
@@ -50,7 +49,7 @@ $title = $result["title"]
     <script src="epub.min.js"></script>
     <script src="jszip-3.1.5/dist/jszip.min.js"></script>
     <div class="book_view_container">
-    <div id="area"></div>
+    <div id="area" class="scrolled"></div>
     <a id="prev" href="#prev" class="arrow">‹</a>
     <a id="next" href="#next" class="arrow">›</a>
     </div>
@@ -60,12 +59,12 @@ $title = $result["title"]
         var prev = document.getElementById("prev");
         var currentPage = document.getElementById("current-percent");
         var book = ePub("<?php echo $path;?>");
-        if (window.screen.width >= 1024)
+        if (window.screen.width >= 1100)
         {
             var rendition = book.renderTo("area", { flow: "paginated", width: "85vw", height: "97vh", display: "block", color: "#fff" });
         }
         else {
-            var rendition = book.renderTo("area", { flow: "scrolled-doc", width: "85vw", height: "97vh", display: "block", color: "#fff" });
+            var rendition = book.renderTo("area", { flow: "scrolled-doc", width: "94vw", height: "97vh", display: "block", color: "#fff" });
         }
         var loc = "";
         var displayed;
@@ -161,28 +160,29 @@ $title = $result["title"]
             xDown = null;
             yDown = null;
         };
-
-
+        rendition.on('relocated', function(location){
+            console.log(location);
+            console.log("Line 81 " + rendition.currentLocation().start.cfi);
+            var xhttp;
+            xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                    console.log("Line 86 " + this.responseText);
+                }
+            };
+            console.log("Line 89 Sending location " + rendition.currentLocation().start.cfi + " To database ")
+            xhttp.open("GET", "bookmark.php?id=<?php echo $book_id;?>&location="+rendition.currentLocation().start.cfi, true);
+            xhttp.send();
+        });
         book.ready.then(function(){
             displayed.then(function(){
                 rendition.themes.register("dark", "styles.css");
                 rendition.themes.select("dark");
-            });
-            rendition.on('relocated', function(location){
-                console.log("Line 81 " + rendition.currentLocation().start.cfi);
-                var xhttp;
-                xhttp = new XMLHttpRequest();
-                xhttp.onreadystatechange = function() {
-                    if (this.readyState == 4 && this.status == 200) {
-                        console.log("Line 86 " + this.responseText);
-                    }
-                };
-                console.log("Line 89 Sending location " + rendition.currentLocation().start.cfi + " To database ")
-                xhttp.open("GET", "bookmark.php?id=<?php echo $book_id;?>&location="+rendition.currentLocation().start.cfi, true);
-                xhttp.send();
-            });
+                rendition.themes.fontSize("100%");
 
+            });
         });
+
 
 
     </script>
