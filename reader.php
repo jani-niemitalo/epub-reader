@@ -64,7 +64,7 @@ $title = $result["title"]
             var rendition = book.renderTo("area", { flow: "paginated", width: "85vw", height: "97vh", display: "block", color: "#fff" });
         }
         else {
-            var rendition = book.renderTo("area", { flow: "scrolled-doc", width: "94vw", height: "97vh", display: "block", color: "#fff" });
+            var rendition = book.renderTo("area", { flow: "scrolled-doc", width: "100vw", height: "97vh", display: "block", color: "#fff" });
         }
         var loc = "";
         var displayed;

@@ -37,10 +37,7 @@ ALTER TABLE `bookmarks`
   ADD PRIMARY KEY (`user_id`,`book_id`),
   ADD KEY `book_bookmark` (`book_id`);
 ");
-array_push($queries, "
-ALTER TABLE `bookmarks`
-  MODIFY COLUMN ts BIGINT UNSIGNED;
-");
+
 array_push($queries, "
 ALTER TABLE `books`
   ADD PRIMARY KEY (`id`),
