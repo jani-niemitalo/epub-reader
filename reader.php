@@ -110,6 +110,9 @@ $title = $result["title"]
 			if ((e.keyCode || e.which) == 39) {
 				rendition.next();
 			}
+            if ((e.keyCode || e.which) == 27) {
+                window.location.href = "library.php";
+            }
 		};
         rendition.on("keyup", keyListener);
         document.addEventListener("keyup", keyListener, false);
