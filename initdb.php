@@ -1,5 +1,5 @@
 <?php
-require_once("mysqlConnection.php");
+require_once("DB/mysqlConnection.php");
 
 $queries = array();
 array_push($queries, "

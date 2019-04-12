@@ -3,7 +3,7 @@
 <head>
 <title>Epub-Reader - <?php require("version.txt")?></title>
 <meta charset="utf-8"/>
-<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="Helpers/styles.css">
 <script type="text/javascript">
 function parse() {
         var xmlhttp = new XMLHttpRequest();
@@ -34,8 +34,8 @@ height: 100%;" onclick="parse()">Change Content</button>
 
 
 <?php
-require_once("mysqlConnection.php");
-require_once("cover.php");
+require_once("DB/mysqlConnection.php");
+require_once("Helpers/cover.php");
 
 
 $booksQuery = "SELECT * FROM books";
