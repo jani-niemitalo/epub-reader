@@ -1,5 +1,5 @@
 <?php
-require_once("mysqlConnection.php");
+require_once("Helpers/mysqlConnection.php");
 $book_id = mysqli_real_escape_string($conn, $_GET['id']);
 $user_id = "123";
 $location = mysqli_real_escape_string($conn, $_GET['location']);

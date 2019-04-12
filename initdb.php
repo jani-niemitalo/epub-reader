@@ -16,7 +16,9 @@ CREATE TABLE `books` (
   `isbn` varchar(17) NOT NULL,
   `path` text NOT NULL,
   `tn_path` varchar(32),
-  `title` varchar(32) NOT NULL
+  `title` varchar(64) NOT NULL,
+  `author` varchar(64) NOT NULL,
+  `series` varchar(64) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 ");
 array_push($queries, "
@@ -51,7 +53,10 @@ ALTER TABLE `users`
 ");
 array_push($queries, "
 ALTER TABLE `books`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24075;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24075,
+  MODIFY `author` varchar(64) NOT NULL,
+  MODIFY `series` varchar(64) NOT NULL,
+  MODIFY `title`  varchar(64) NOT NULL
 ");
 array_push($queries, "
 ALTER TABLE `users`

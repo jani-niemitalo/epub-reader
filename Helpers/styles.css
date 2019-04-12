@@ -151,7 +151,10 @@ body {
 .separator_t{
     font-size: 4vh;
 }
-
+.searchSeparator
+{
+    margin-top: 50px;
+}
 
 .bookViewWrapper{
     display: flex;
