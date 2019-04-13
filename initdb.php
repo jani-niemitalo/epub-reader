@@ -5,8 +5,12 @@ $queries = array();
 
 array_push($queries, "
 DROP TABLE bookmarks;
-DROP TABLE books;
+");
+array_push($queries, "
 DROP TABLE users;
+");
+array_push($queries, "
+DROP TABLE books;
 ");
 
 
