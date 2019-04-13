@@ -2,6 +2,14 @@
 require_once("DB/mysqlConnection.php");
 
 $queries = array();
+
+array_push($queries, "
+DROP TABLE `bookmarks`;
+DROP TABLE `books`;
+DROP TABLE `users`;
+");
+
+
 array_push($queries, "
 CREATE TABLE `bookmarks` (
   `user_id` int(11) UNSIGNED NOT NULL,
@@ -54,9 +62,6 @@ ALTER TABLE `users`
 array_push($queries, "
 ALTER TABLE `books`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24075,
-  ADD `author` varchar(64),
-  ADD `series` varchar(64),
-  ADD `title` varchar(64) NOT NULL,
   MODIFY `author` varchar(64),
   MODIFY `series` varchar(64),
   MODIFY `title`  varchar(64) NOT NULL
