@@ -54,11 +54,11 @@ ALTER TABLE `users`
 array_push($queries, "
 ALTER TABLE `books`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24075,
-  ADD KEY `author` varchar(64) NOT NULL,
-  ADD KEY `series` varchar(64) NOT NULL,
+  ADD KEY `author` varchar(64),
+  ADD KEY `series` varchar(64),
   ADD KEY `title` varchar(64) NOT NULL,
-  MODIFY `author` varchar(64) NOT NULL,
-  MODIFY `series` varchar(64) NOT NULL,
+  MODIFY `author` varchar(64),
+  MODIFY `series` varchar(64),
   MODIFY `title`  varchar(64) NOT NULL
 ");
 array_push($queries, "
