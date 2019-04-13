@@ -4,9 +4,9 @@ require_once("DB/mysqlConnection.php");
 $queries = array();
 
 array_push($queries, "
-DROP TABLE `bookmarks`;
-DROP TABLE `books`;
-DROP TABLE `users`;
+DROP TABLE bookmarks;
+DROP TABLE books;
+DROP TABLE users;
 ");
 
 
