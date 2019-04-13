@@ -16,7 +16,7 @@ function parse() {
                 document.getElementById("result").innerHTML = "OK!";
             }
         };
-        xmlhttp.open("GET", "parseLibrary.php", true);
+        xmlhttp.open("GET", "Helpers/parseLibrary.php", true);
         xmlhttp.send();
 
 }
