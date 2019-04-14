@@ -38,7 +38,8 @@ CREATE TABLE `users` (
   `id` int(10) UNSIGNED NOT NULL,
   `email` varchar(64) NOT NULL,
   `password` varchar(32) NOT NULL,
-  `name` varchar(32) NOT NULL
+  `name` varchar(32) NOT NULL,
+  'google_id' varchar(32) NOT NULL 
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 ");
 
@@ -80,7 +81,7 @@ ALTER TABLE `bookmarks`
   ADD CONSTRAINT `user_bookmark` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 ");
 
-for ($i=0; $i < count($queries); $i++) {
+for ($i = 0; $i < count($queries); $i++) {
     $res = $conn->query($queries[$i]);
     //echo $queries[$i]. "<br>";
     echo $res ? "[OK] " . $queries[$i] : "[ERR] " . $conn->error;
