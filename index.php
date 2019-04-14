@@ -1,57 +1,45 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Epub-Reader - <?php require("version.txt")?></title>
-<meta charset="utf-8"/>
-<link rel="stylesheet" href="Helpers/styles.css">
-<script type="text/javascript">
-function parse() {
-        var xmlhttp = new XMLHttpRequest();
-        xmlhttp.onreadystatechange = function() {
-            if (this.readyState == 4 && this.status == 200) {
-                document.getElementById("result").innerHTML = "OK!";
+    <title>Epub-Reader - <?php require("version.txt") ?></title>
+    <meta charset="utf-8"/>
+    <meta name="google-signin-client_id" content="800988841068-vd3v312eikhgvi9g9k51r3t6c8kn5meu.apps.googleusercontent.com">
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
+    <script>
+        function getQueryVariable(variable)
+        {
+            var query = window.location.search.substring(1);
+            var vars = query.split("&");
+            for (var i=0;i<vars.length;i++) {
+                var pair = vars[i].split("=");
+                if(pair[0] == variable){return pair[1];}
             }
-        };
-        xmlhttp.open("GET", "parseLibrary.php", true);
-        xmlhttp.send();
+            return(false);
+        }
 
-}
-</script>
+        function onSignIn(googleUser) {
+            if (getQueryVariable("logout")) {
+                var auth2 = gapi.auth2.getAuthInstance();
+                auth2.signOut().then(function () {
+                    window.location = "http://localhost:8888"
+                });
+
+                return;
+            }
+
+            var profile = googleUser.getBasicProfile();
+            console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
+            console.log('Name: ' + profile.getName());
+            console.log('Image URL: ' + profile.getImageUrl());
+            console.log('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
+            window.location = "http://localhost:8888/library.php"
+        }
+    </script>
 </head>
-<body>
+<body id="login">
+<div class="g-signin2" data-onsuccess="onSignIn"></div>
 
-<div id="header">
-<button id="parseButton" type="button" style="
-height: 100%;" onclick="parse()">Change Content</button>
-<div id="result" style="color: #fff; height: 100%;">
-</div>
-</div>
-<div style="height: 50px;">
-
-</div>
-
-<div class="grid">
-
-
-<?php
-require_once("DB/mysqlConnection.php");
-require_once("Helpers/cover.php");
-
-
-$booksQuery = "SELECT * FROM books";
-$booksQueryResult = $conn->query($booksQuery);
-
-if ($booksQueryResult->num_rows > 0) {
-    // output data of each row
-    while($row = $booksQueryResult->fetch_assoc()) {
-        echo coverFN($row);
-    }
-} else {
-    echo "0 results";
-}
-$conn->close();
-?>
-</div>
 </body>
 
 </html>

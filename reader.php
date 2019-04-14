@@ -2,7 +2,7 @@
 <html>
 <head>
 <?php
-require_once("DB/mysqlConnection.php");
+require_once("mysqlConnection.php");
 $book_id = mysqli_real_escape_string($conn, $_GET['id']);
 $result = $conn->query("SELECT * FROM books WHERE id=$book_id")->fetch_assoc();
 $path = $result["path"];
@@ -16,7 +16,7 @@ $title = $result["title"]
       name='viewport'
       content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0'
 />
-<link rel="stylesheet" href="Helpers/styles.css">
+<link rel="stylesheet" href="styles.css">
 <style type="text/css">
   body {
     display: flex;
@@ -83,7 +83,7 @@ $title = $result["title"]
 
             }
         };
-        xhttp2.open("POST", "Helpers/bookmark.php?id=<?php echo $book_id;?>&location=", true);
+        xhttp2.open("POST", "bookmark.php?id=<?php echo $book_id;?>&location=", true);
         xhttp2.send();
         //console.log(loc);
         console.log("Line 56 " + loc);
@@ -174,12 +174,12 @@ $title = $result["title"]
                 }
             };
             console.log("Line 89 Sending location " + rendition.currentLocation().start.cfi + " To database ")
-            xhttp.open("POST", "Helpers/bookmark.php?id=<?php echo $book_id;?>&location="+rendition.currentLocation().start.cfi, true);
+            xhttp.open("POST", "bookmark.php?id=<?php echo $book_id;?>&location="+rendition.currentLocation().start.cfi, true);
             xhttp.send();
         });
         book.ready.then(function(){
             displayed.then(function(){
-                rendition.themes.register("dark", "Helpers/styles.css");
+                rendition.themes.register("dark", "styles.css");
                 rendition.themes.select("dark");
                 rendition.themes.fontSize("100%");
 

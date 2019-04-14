@@ -16,4 +16,6 @@ services:
             - "MYSQL_ROOT_PASSWORD=topkek"
             - "MYSQL_USER=top"
             - "MYSQL_PASSWORD=kek"
+        ports:
+            - "3306:3306"
 

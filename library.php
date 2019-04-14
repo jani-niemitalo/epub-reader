@@ -2,12 +2,12 @@
 <html>
 <head>
   <?php
-  require_once("DB/mysqlConnection.php");
-  require_once("Helpers/cover.php");
+  require_once("mysqlConnection.php");
+  require_once("cover.php");
   ?>
 <title>Epub-Reader - <?php require("version.txt")?></title>
 <meta charset="utf-8"/>
-<link rel="stylesheet" href="Helpers/styles.css">
+<link rel="stylesheet" href="styles.css">
 <script type="text/javascript">
 function parse() {
         var xmlhttp = new XMLHttpRequest();
@@ -16,7 +16,7 @@ function parse() {
                 document.getElementById("result").innerHTML = "OK!";
             }
         };
-        xmlhttp.open("GET", "Helpers/parseLibrary.php", true);
+        xmlhttp.open("GET", "parseLibrary.php", true);
         xmlhttp.send();
 
 }
@@ -40,7 +40,7 @@ function showResults() {
 
     }
     ;
-    xmlhttp.open("GET", "Helpers/search.php?q=" + input, true);
+    xmlhttp.open("GET", "search.php?q=" + input, true);
     xmlhttp.send();
     }
 </script>
@@ -53,6 +53,7 @@ function showResults() {
       </div>
       <input type="text" id="search" placeholder="Search" style="height: 90%;">
       <button type="submit" style="height: 100%;" onclick="showResults()">Search</button>
+
   </div>
   <div class="grid" id="search_results" id="recent_lib" style="margin-top: 50px">
   </div>

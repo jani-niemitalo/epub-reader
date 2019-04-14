@@ -2,7 +2,10 @@
 <html>
 <head>
 <?php
-require_once("DB/mysqlConnection.php");
+require_once("mysqlConnection.php");
+require_once('epub.php');
+require_once("cover.php");
+
 $book_id = mysqli_real_escape_string($conn, $_GET['id']);
 $booksQuery = "SELECT * FROM books WHERE id=$book_id";
 $booksQueryResult = $conn->query($booksQuery);
@@ -11,15 +14,18 @@ $db_book = $booksQueryResult->fetch_assoc();
 ?>
 <title><?php echo $db_book["title"];?></title>
 <meta charset="utf-8"/>
-<link rel="stylesheet" href="Helpers/styles.css">
+<link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <?php
-        require_once('Helpers/epub.php');
-        require_once("Helpers/cover.php");
-        $epub = new EPub($db_book["path"]);
 
-        if ($db_book["tn_path"] == "")
+    try {
+        $epub = new EPub($db_book["path"]);
+    } catch (Exception $e) {
+        echo $e;
+    }
+
+    if ($db_book["tn_path"] == "")
         {
             $var = "lelkek";
         }

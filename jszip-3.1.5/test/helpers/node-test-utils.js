@@ -5,7 +5,7 @@
 var fs = require("fs");
 var path = require("path");
 
-global.JSZip = require("../../lib/index");
+global.JSZip = require("../../lib");
 
 global.JSZipTestUtils.loadZipFile = function(name, callback) {
     fs.readFile(path.join("test", name), "binary", callback);

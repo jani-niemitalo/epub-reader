@@ -1,6 +1,6 @@
 <?php
 require_once('epub.php');
-require_once("../DB/mysqlConnection.php");
+require_once("mysqlConnection.php");
 require_once("mime2ext.php");
 
 function getDirContents($dir, &$results = array()){
@@ -22,14 +22,14 @@ $conn->query("DELETE FROM `books` WHERE 1");
 $old = umask(0);
 
 
-if( !is_dir("../ebook/tumbnails") ) {
-    mkdir("../ebook/tumbnails", 0755, true);
+if( !is_dir("ebook/tumbnails") ) {
+    mkdir(".ebook/tumbnails", 0755, true);
 }
 umask($old);
 
 
 sleep(1);
-foreach (getDirContents('../ebook/books') as $v) {
+foreach (getDirContents('ebook/books') as $v) {
     if (strripos($v, '.epub', -0)){
     $epub = new EPub($v);
     $var = $epub->ISBN();
@@ -64,7 +64,7 @@ foreach (getDirContents('../ebook/books') as $v) {
             if ($id) {
                 $id = $id->fetch_assoc()["id"];
                 //echo "BOOK ID =" . $id;
-                $tn_path = "../ebook/tumbnails/" . $id . "." . mime2ext($img['mime']);
+                $tn_path = "ebook/tumbnails/" . $id . "." . mime2ext($img['mime']);
                 //echo("<br>BOOK TN_Path = " . $tn_path);
                 $conn->query("UPDATE books SET tn_path = '" . $tn_path . "' WHERE id = $id");
                 file_put_contents($tn_path, $img['data']);
