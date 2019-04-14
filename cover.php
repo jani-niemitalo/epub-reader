@@ -1,4 +1,6 @@
 <?php
+session_start();
+include("session.php");
 function coverFN($db_book, $target = "bookPreview.php?id=", $col = "id")
 {
     require_once("adjustColor.php");

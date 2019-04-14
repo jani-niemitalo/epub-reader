@@ -1,14 +1,15 @@
-<!DOCTYPE html>
-<html>
-<head>
 <?php
-require_once("mysqlConnection.php");
+session_start();
+include("session.php");
 $book_id = mysqli_real_escape_string($conn, $_GET['id']);
 $result = $conn->query("SELECT * FROM books WHERE id=$book_id")->fetch_assoc();
 $path = $result["path"];
 $title = $result["title"]
 
 ?>
+<!DOCTYPE html>
+<html>
+<head>
 <title><?php echo $title;?></title>
 <script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/detect_swipe/2.1.1/jquery.detect_swipe.min.js"></script>

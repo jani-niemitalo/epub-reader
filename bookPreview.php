@@ -1,8 +1,6 @@
-<!DOCTYPE html>
-<html>
-<head>
 <?php
-require_once("mysqlConnection.php");
+session_start();
+include("session.php");
 require_once('epub.php');
 require_once("cover.php");
 
@@ -12,6 +10,10 @@ $booksQueryResult = $conn->query($booksQuery);
 $db_book = $booksQueryResult->fetch_assoc();
 
 ?>
+<!DOCTYPE html>
+<html>
+<head>
+
 <title><?php echo $db_book["title"];?></title>
 <meta charset="utf-8"/>
 <link rel="stylesheet" href="styles.css">

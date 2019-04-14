@@ -1,10 +1,12 @@
+<?php
+//require_once("mysqlConnection.php");
+require_once("cover.php");
+session_start();
+include("session.php");
+?>
 <!DOCTYPE html>
 <html>
 <head>
-  <?php
-  require_once("mysqlConnection.php");
-  require_once("cover.php");
-  ?>
 <title>Epub-Reader - <?php require("version.txt")?></title>
 <meta charset="utf-8"/>
 <link rel="stylesheet" href="styles.css">
@@ -53,7 +55,12 @@ function showResults() {
       </div>
       <input type="text" id="search" placeholder="Search" style="height: 90%;">
       <button type="submit" style="height: 100%;" onclick="showResults()">Search</button>
-
+      <button type="logout" style="height: 100%;" onclick="logout()">Log out</button>
+      <script>
+          function logout() {
+              window.location = "logout.php"
+          }
+      </script>
   </div>
   <div class="grid" id="search_results" id="recent_lib" style="margin-top: 50px">
   </div>

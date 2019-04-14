@@ -5,8 +5,9 @@
  * Date: 7.4.2019
  * Time: 4:10
  */
-  require_once("mysqlConnection.php");
-  require_once("cover.php");
+session_start();
+include("session.php");
+require_once("cover.php");
 $input = mysqli_real_escape_string($conn, $_GET['q']);
 //$input = mysqli_real_escape_string($conn, $input);
 $search_query = " SELECT * FROM books WHERE 

@@ -1,6 +1,7 @@
 <?php
 require_once('epub.php');
-require_once("mysqlConnection.php");
+session_start();
+include("session.php");
 require_once("mime2ext.php");
 
 function getDirContents($dir, &$results = array()){
