@@ -39,7 +39,7 @@ CREATE TABLE `users` (
   `email` varchar(64) NOT NULL,
   `password` varchar(32) NOT NULL,
   `name` varchar(32) NOT NULL,
-  'google_id' varchar(32) NOT NULL 
+  `google_id` varchar(32) NOT NULL 
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 ");
 
