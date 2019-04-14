@@ -70,7 +70,7 @@ function showResults() {
 
 <div class="grid" id="recent_lib" >
   <?php
-    $user_id = "123";
+    $user_id = $_SESSION['id'];
     $latest_query = " SELECT * FROM bookmarks
                       INNER JOIN books
                       ON bookmarks.book_id = books.id
