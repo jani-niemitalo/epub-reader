@@ -72,8 +72,9 @@ session_start();
     </script>
 </head>
 <body id="login">
+<div></div>
 <div class="g-signin2" data-onsuccess="onSignIn"></div>
-
+<div style="color: #888888">This web-page will not work if you have disabled specific web technologies such as cookies, redirecting, and or blocked services like Google</div>
 </body>
 
 </html>

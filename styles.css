@@ -150,6 +150,7 @@ body {
 }
 .separator_t{
     font-size: 4vh;
+    color: #888888;
 }
 .searchSeparator
 {
@@ -183,7 +184,8 @@ body {
     width: 100%;
     height: 100%;
     display: flex;
-    justify-content: center; /*centers items on the line (the x-axis by default)*/
+    flex-direction: column;
+    justify-content: space-between; /*centers items on the line (the x-axis by default)*/
     align-items: center; /*centers items on the cross-axis (y by default)*/
 }
 
@@ -207,11 +209,11 @@ body {
     }
     .cover{
         width: 100%;
-        height: 90%;
+        height: 100%;
     }
 
     .main_img{
-        height: 85%;
+        height: 90%;
     }
     .book_image{
         max-width: 100%;
@@ -222,9 +224,10 @@ body {
     }
     .content{
         width: 45%;
-        height: 35%;
+        //height: 35%;
         margin: 0;
         margin-top: 10%;
+        margin-bottom: 10%;
     }
 }
 .book_info_ta{
