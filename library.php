@@ -50,9 +50,13 @@ include("session.php");
 </head>
 <body>
 <div id="header">
-    <button id="parseButton" type="button" style="
-      height: 100%;" onclick="parse()">Change Content
-    </button>
+    <?php
+    if (enumToInt($_SESSION["perm_lvl"]) >= 2)
+    echo "    <button id=\"parseButton\" type=\"button\" style=\"
+      height: 100%;\" onclick=\"parse()\">Change Content
+    </button>"
+    ?>
+
     <div id="result" style="color: #fff; height: 100%;">
     </div>
     <input type="text" id="search" placeholder="Search" style="height: 90%;">
@@ -91,16 +95,32 @@ include("session.php");
 </div>
 <div class="grid">
 
-
     <?php
+    function enumToInt($string)
+    {
+        if ($string == "guest")
+            return 0;
+        if ($string == "user")
+            return 1;
+        if ($string == "uploader")
+            return 2;
+        if ($string == "admin")
+            return 3;
+
+    }
+
     $booksQuery = "SELECT * FROM books";
     $booksQueryResult = $conn->query($booksQuery);
-
+    $count = 0;
     if ($booksQueryResult->num_rows > 0) {
         // output data of each row
         while ($row = $booksQueryResult->fetch_assoc()) {
-            echo coverFN($row);
+            if (enumToInt($row["permission_lvl"]) <= enumToInt($_SESSION["perm_lvl"])) {
+                $count++;
+                echo coverFN($row);
+            }
         }
+        //echo $count;
     } else {
         echo "0 results";
     }

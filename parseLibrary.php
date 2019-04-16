@@ -51,7 +51,7 @@ foreach (getDirContents('ebook/books') as $v) {
         continue;
     }
 
-    $sqlInsert = "REPLACE INTO books (isbn, path, title, author, series) VALUES ('" . mysqli_real_escape_string($conn,$var) . "', '" . mysqli_real_escape_string($conn,$v) . "', '" . mysqli_real_escape_string($conn,$title) . "', '" . mysqli_real_escape_string($conn,$author) . "', '" . mysqli_real_escape_string($conn,$series) . "')";
+    $sqlInsert = "REPLACE INTO books (isbn, path, title, author, series, permission_lvl) VALUES ('" . mysqli_real_escape_string($conn,$var) . "', '" . mysqli_real_escape_string($conn,$v) . "', '" . mysqli_real_escape_string($conn,$title) . "', '" . mysqli_real_escape_string($conn,$author) . "', '" . mysqli_real_escape_string($conn,$series) . "', 'user')";
     echo $sqlInsert . "<br>";
     $sqlResult = $conn->query($sqlInsert);
     if ($sqlResult){

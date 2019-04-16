@@ -28,9 +28,10 @@ CREATE TABLE `books` (
   `isbn` varchar(17) NOT NULL,
   `path` text NOT NULL,
   `tn_path` varchar(32),
-  `title` varchar(64) NOT NULL,
-  `author` varchar(64) NOT NULL,
-  `series` varchar(64) NOT NULL
+  `title` varchar(256) NOT NULL,
+  `author` varchar(64),
+  `series` varchar(64),
+  `permission_lvl` ENUM ('guest', 'user', 'uploader', 'admin')
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 ");
 array_push($queries, "
@@ -39,13 +40,14 @@ CREATE TABLE `users` (
   `email` varchar(64) NOT NULL,
   `password` varchar(32) NOT NULL,
   `name` varchar(32) NOT NULL,
-  `google_id` varchar(32) NOT NULL 
+  `google_id` varchar(32),
+  `permission_lvl` ENUM ('guest', 'user', 'uploader', 'admin')
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 ");
 
 array_push($queries, "
-INSERT INTO `users` (`id`, `email`, `password`, `name`) VALUES
-(123, 'jani.niemitalo@gmail.com', '123123', 'Seppo');
+INSERT INTO `users` (`id`, `email`, `password`, `name`,`google_id`, `permission_lvl`) VALUES
+(123, 'jani.niemitalo@gmail.com', '-', 'Jani Niemitalo', '-', 'admin');
 ");
 array_push($queries, "
 ALTER TABLE `bookmarks`
@@ -66,10 +68,7 @@ ALTER TABLE `users`
 ");
 array_push($queries, "
 ALTER TABLE `books`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24075,
-  MODIFY `author` varchar(64),
-  MODIFY `series` varchar(64),
-  MODIFY `title`  varchar(64) NOT NULL
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT
 ");
 array_push($queries, "
 ALTER TABLE `users`

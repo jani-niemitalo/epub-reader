@@ -11,4 +11,9 @@ if (!isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] !== true) {
     header("Location: index.php");
     exit();
 }
+
+$user = $conn->query("SELECT * FROM users WHERE id = '".$_SESSION["id"]."' limit 1")->fetch_assoc();
+$_SESSION['perm_lvl'] = $user["permission_lvl"];
+
+
 ?>

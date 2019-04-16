@@ -19,9 +19,10 @@ if ($payload) {
     $userid = $payload['sub'];
     $checkIfUser = $conn->query("SELECT * FROM users WHERE google_id = $userid limit 1");
     if (mysqli_num_rows($checkIfUser) > 0) {
-        //echo "Exists";
+        $var = $checkIfUser->fetch_assoc();
         $_SESSION['loggedin'] = true;
-        $_SESSION['id'] = $checkIfUser->fetch_assoc()["id"];
+        $_SESSION['id'] = $var["id"];
+        $_SESSION['perm_lvl'] = $var["permission_lvl"];
         //create session here for user found in database
     }
     else{
@@ -31,7 +32,7 @@ if ($payload) {
         $password = "";
         $name = $_POST["name"];
         $google_id= $userid;
-        $sqlInsert = "INSERT into users (email, password, name, google_id) values ('" .$email. "','-','" .$name. "', '" .$google_id. "');";
+        $sqlInsert = "REPLACE into users (email, password, name, google_id) values ('" .$email. "','-','" .$name. "', '" .$google_id. "');";
         $sqlResult = $conn->query($sqlInsert);
         if ($sqlResult){
             //echo "[OK]". $sqlInsert;
