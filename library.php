@@ -1,6 +1,7 @@
 <?php
 //require_once("mysqlConnection.php");
 require_once("cover.php");
+require_once("enumToInt.php");
 session_start();
 include("session.php");
 ?>
@@ -51,10 +52,10 @@ include("session.php");
 <body>
 <div id="header">
     <?php
-    if (enumToInt($_SESSION["perm_lvl"]) >= 2)
-    echo "    <button id=\"parseButton\" type=\"button\" style=\"
-      height: 100%;\" onclick=\"parse()\">Change Content
-    </button>"
+        if (enumToInt($_SESSION["perm_lvl"]) >= 2)
+        echo "    <button id=\"parseButton\" type=\"button\" style=\"
+          height: 100%;\" onclick=\"parse()\">Change Content
+        </button>"
     ?>
 
     <div id="result" style="color: #fff; height: 100%;">
@@ -94,20 +95,7 @@ include("session.php");
     <h1 class="separator_t"> All Books </h1>
 </div>
 <div class="grid">
-
-    <?php
-    function enumToInt($string)
-    {
-        if ($string == "guest")
-            return 0;
-        if ($string == "user")
-            return 1;
-        if ($string == "uploader")
-            return 2;
-        if ($string == "admin")
-            return 3;
-
-    }
+<?php
 
     $booksQuery = "SELECT * FROM books";
     $booksQueryResult = $conn->query($booksQuery);

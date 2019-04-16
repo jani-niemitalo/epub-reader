@@ -8,6 +8,7 @@
 session_start();
 include("session.php");
 require_once("cover.php");
+require_once("enumToInt.php");
 $input = mysqli_real_escape_string($conn, $_GET['q']);
 //$input = mysqli_real_escape_string($conn, $input);
 $search_query = " SELECT * FROM books WHERE 
@@ -25,15 +26,3 @@ else{
     echo "Empty Result";
 }
 
-function enumToInt($string)
-{
-    if ($string == "guest")
-        return 0;
-    if ($string == "user")
-        return 1;
-    if ($string == "uploader")
-        return 2;
-    if ($string == "admin")
-        return 3;
-
-}
