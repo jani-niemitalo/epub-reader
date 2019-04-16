@@ -5,7 +5,12 @@
  * Date: 7.4.2019
  * Time: 4:10
  */
-require_once("mysqlConnection.php");
+session_start();
+require_once ("session.php");
+require_once ("enumToInt.php");
+if (enumToInt($_SESSION["perm_lvl"]) < 3) {
+    header("Location: library.php");
+}
 echo $_GET['q'] . "<br>";
 $search_query = mysqli_real_escape_string($conn,$_GET['q']);
 $sql = $search_query;

@@ -1,6 +1,10 @@
 <?php
-require_once("mysqlConnection.php");
-
+session_start();
+require_once ("session.php");
+require_once ("enumToInt.php");
+if (enumToInt($_SESSION["perm_lvl"]) < 3) {
+    header("Location: library.php");
+}
 $queries = array();
 
 array_push($queries, "

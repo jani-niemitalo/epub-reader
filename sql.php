@@ -2,7 +2,12 @@
 <html>
 <head>
     <?php
-        require_once("DB/mysqlConnection.php");
+    session_start();
+    require_once("session.php");
+    require_once("enumToInt.php");
+    if (enumToInt($_SESSION["perm_lvl"]) < 3) {
+        header("Location: library.php");
+    }
     ?>
 </head>
 <title>Epub-Reader - <?php require("version.txt") ?></title>

@@ -1,7 +1,11 @@
 <?php
 require_once('epub.php');
 session_start();
-include("session.php");
+require_once ("session.php");
+require_once ("enumToInt.php");
+if (enumToInt($_SESSION["perm_lvl"]) < 3) {
+    header("Location: library.php");
+}
 require_once("mime2ext.php");
 
 function getDirContents($dir, &$results = array()){
