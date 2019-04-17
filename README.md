@@ -18,3 +18,9 @@ Features:
 The Folder structure of this project is absolutely horendous, and i am aware of that, it is partly because i made this in a rush, and mainly for myself for personal use. And partly because a library that i am using does not support accessing parent folders at all, so some files must be at the top directory, or other spesific files need to be in subdirectories of that one, and it becomes a whole mess. In commit history you can observe my attempt at organizing this to folders, which crashed and burned gloriously.
 
 NOTE: This is a Mirror Repository of my actual production repository which has CI and all fancy stuff, so this might not be updated as often.
+
+Using libraries:
+
+* https://github.com/futurepress/epub.js/
+* https://github.com/splitbrain/php-epub-meta
+* https://stuk.github.io/jszip/ v.3.1.5
