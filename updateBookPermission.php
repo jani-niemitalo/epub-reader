@@ -12,14 +12,15 @@ require_once ("enumToInt.php");
 if (enumToInt($_SESSION["perm_lvl"]) < 3) {
     header("Location: library.php");
 }
-$id = $_POST["id"];
-$value = $_POST["value"];
+$id = mysqli_real_escape_string($conn, $_POST["id"]);
+$value = mysqli_real_escape_string($conn, $_POST["value"]);
+$col = mysqli_real_escape_string($conn, $_POST["col"]);
 
 $returnvalue =$id . ", " . $value;
 //echo ($returnvalue);
-$sql ="update books set permission_lvl='".$value."' where id='".$id."'";
+$sql ="update books set ".$col."='".$value."' where id='".$id."'";
 if ($conn->query($sql) === TRUE) {
-    echo "Record updated successfully";
+    echo "Record updated successfully". $sql;
 } else {
     echo "Error updating record: " . $conn->error;
 }

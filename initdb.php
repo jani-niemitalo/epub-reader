@@ -1,12 +1,17 @@
 <?php
-session_start();
-require_once ("session.php");
 require_once ("enumToInt.php");
-if (enumToInt($_SESSION["perm_lvl"]) < 3) {
-    header("Location: library.php");
-}
+require_once ("mysqlConnection.php");
 $queries = array();
 
+array_push($queries, "
+DROP DATABASE library;
+");
+array_push($queries, "
+CREATE DATABASE library;
+");
+array_push($queries, "
+USE library;
+");
 array_push($queries, "
 DROP TABLE bookmarks;
 ");

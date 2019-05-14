@@ -29,21 +29,109 @@ $db_book = $booksQueryResult->fetch_assoc();
             }
             xmlhttp.open("POST", "updateBookPermission.php", true);
             xmlhttp.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-            xmlhttp.onload = function() {
-                console.log("Book permissions updated:\n"+ xmlhttp.responseText);
+            xmlhttp.onload = function () {
+                console.log("Book permissions updated:\n" + xmlhttp.responseText);
             };
             var data = ''
                 + 'id=' + "<?php echo $db_book["id"]?>"
-                + '&value=' + document.getElementById("permSelector").value;
+                + '&value=' + document.getElementById("permSelector").value
+                + '&col=permission_lvl';
             console.log(data);
             xmlhttp.send(data);
 
 
         }
+
+        var initialData = "";
+
+        function updateData(selection) {
+            if (document.getElementById(selection).value === initialData)
+                return;
+            console.log(selection);
+            var userIsSure = confirm("ARE YOU SURE YOU WANT TO UPDATE DATA?");
+            if (!userIsSure)
+                return;
+            switch (selection) {
+                case "Title":
+                    uploadData("title", document.getElementById(selection).value);
+                    //console.log("Title");
+                    break;
+                case "ISBN" :
+                    uploadData("isbn", document.getElementById(selection).value);
+                    //console.log("ISBN");
+                    break;
+                case "series":
+                    uploadData("series", document.getElementById(selection).value);
+                    //console.log("series");
+                    break;
+
+                default:
+                    console.log("This Shouldn't Happen...");
+
+
+            }
+
+            function uploadData(col, value) {
+                if (window.XMLHttpRequest) {
+                    // code for IE7+, Firefox, Chrome, Opera, Safari
+                    xmlhttp = new XMLHttpRequest();
+                } else {
+                    // code for IE6, IE5
+                    xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+                }
+                xmlhttp.open("POST", "updateBookPermission.php", true);
+                xmlhttp.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+                xmlhttp.onload = function () {
+                    console.log("Book permissions updated:\n" + xmlhttp.responseText);
+                };
+                var data = ''
+                    + 'id=' + "<?php echo $db_book["id"]?>"
+                    + '&value=' + value.trim()
+                    + '&col=' + col;
+                console.log(data);
+                xmlhttp.send(data);
+            }
+
+
+        }
+
+        function querySeries() {
+            if (window.XMLHttpRequest) {
+                // code for IE7+, Firefox, Chrome, Opera, Safari
+                xmlhttp = new XMLHttpRequest();
+            } else {
+                // code for IE6, IE5
+                xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+            }
+            xmlhttp.open("GET", "goodreadsHandler.php?id=" + <?php echo $db_book["id"]?>, true);
+            xmlhttp.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+            xmlhttp.onload = function () {
+                //console.log('Signed in as: ' + xmlhttp.responseText);
+
+                location.reload();
+
+                //window.location = "library.php";
+            };
+            //console.log(input);
+
+
+            //console.log(data);
+            xmlhttp.send();
+        }
+
+        function saveInitialValue(selection) {
+            var lel = document.getElementById(selection).value;
+            console.log(lel);
+            initialData = lel;
+        }
     </script>
 </head>
 <body>
 <?php
+$authorized = false;
+if (enumToInt($_SESSION["perm_lvl"]) >= 2) {
+    $authorized = true;
+}
 
 try {
     $epub = new EPub($db_book["path"]);
@@ -62,16 +150,59 @@ if ($db_book["tn_path"] == "") {
     <?php echo coverFN($db_book, "reader.php?id="); ?>
     <div class="book_info">
         <div class="book_info_ta">
-            <h3 class="book_info_H3">Title </h3> <?php echo htmlspecialchars($epub->Title()) ?>
+            <h3 class="book_info_H3">Title </h3> <?php
+            if ($authorized) {
+                echo '<input 
+                id="Title" 
+                type="text" 
+                onfocus="saveInitialValue(`Title`)"
+                onfocusout="updateData(`Title`)"
+                value="' . htmlspecialchars($db_book["title"]) . '">';
+            } else {
+                echo htmlspecialchars($db_book["title"]);
+            }
+            ?>
         </div>
         <div class="book_info_ta">
-            <h3 class="book_info_H3">Genre </h3> <?php echo htmlspecialchars(join($epub->Subjects())) ?>
+            <h3 class="book_info_H3">Genre </h3> <?php echo htmlspecialchars(join($epub->Subjects())); ?>
         </div>
         <div class="book_info_ta">
-            <h3 class="book_info_H3">Publisher </h3> <?php echo htmlspecialchars($epub->Publisher()) ?>
+            <h3 class="book_info_H3">Publisher </h3> <?php echo htmlspecialchars($epub->Publisher()); ?>
         </div>
         <div class="book_info_ta">
-            <h3 class="book_info_H3">ISBN </h3> <?php echo htmlspecialchars($epub->ISBN()) ?>
+            <h3 class="book_info_H3">ISBN </h3> <?php
+            if ($authorized) {
+                echo '<input 
+                id="ISBN" 
+                type="text" 
+                onfocus="saveInitialValue(`ISBN`)"
+                onfocusout="updateData(`ISBN`)" 
+                value="' . htmlspecialchars($db_book["isbn"]) . '">';
+            } else {
+                echo htmlspecialchars($db_book["isbn"]);
+            }
+            ?>
+        </div>
+        <div class="book_info_ta">
+            <h3 class="book_info_H3">Series </h3> <?php
+            if ($authorized) {
+                if (htmlspecialchars($db_book["series"]) == "") {
+                    echo "<div id=\"button\" onclick=\"querySeries()\">Query series info</div>";
+                } else {
+                    echo '<input 
+                    id="series" 
+                    type="text" 
+                    onfocus="saveInitialValue(`series`)" 
+                    onfocusout="updateData(`series`)" 
+                    value="' . htmlspecialchars($db_book["series"]) . '">';
+                }
+
+            } else {
+
+                echo htmlspecialchars($db_book["series"]);
+            }
+
+            ?>
         </div>
 
         <?php
@@ -89,7 +220,7 @@ if ($db_book["tn_path"] == "") {
         if (enumToInt($db_book["permission_lvl"]) == 3)
             $bookPerm4 = "selected";
 
-        if (enumToInt($_SESSION["perm_lvl"]) >= 2) {
+        if ($authorized) {
             echo "<div>
                       <h3 class=\"book_info_H3\">Permission LVL </h3>
                       <select onchange=\"parse()\" id=\"permSelector\">

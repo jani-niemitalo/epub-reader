@@ -2,7 +2,7 @@
 session_start();
 ?>
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <title>Epub-Reader - <?php require("version.txt") ?></title>
     <meta charset="utf-8"/>
