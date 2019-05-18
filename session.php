@@ -12,7 +12,7 @@ if (!isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] !== true) {
     exit();
 }
 
-$user = $conn->query("SELECT * FROM users WHERE id = '".$_SESSION["id"]."' limit 1")->fetch_assoc();
+$user = $conn->query("SELECT * FROM users WHERE id = '".mysqli_real_escape_string($conn, $_SESSION["id"])."' limit 1")->fetch_assoc();
 $_SESSION['perm_lvl'] = $user["permission_lvl"];
 
 

@@ -15,7 +15,7 @@ $title = $result["title"]
 <script src="https://cdnjs.cloudflare.com/ajax/libs/detect_swipe/2.1.1/jquery.detect_swipe.min.js"></script>
 <meta charset="utf-8"
       name='viewport'
-      content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0'
+      content='initial-scale=1.0, maximum-scale=1.0, user-scalable=0'
 />
 <link rel="stylesheet" href="styles.css">
 <style type="text/css">
@@ -25,24 +25,11 @@ $title = $result["title"]
     -webkit-justify-content: center;
   }
   #viewer {
-    width: 290px;
-    height: 580px;
+
     box-shadow: 0 0 4px #ccc;
     padding: 10px 10px 0px 10px;
     margin: 5px auto;
     background: white;
-  }
-  @media only screen
-    and (min-device-width : 320px)
-    and (max-device-width : 667px) {
-      #viewer {
-        height: 96.5%;
-
-      }
-      .arrow {
-        //position: inherit;
-        //display: none;
-      }
   }
 </style>
 </head>
@@ -75,10 +62,10 @@ $title = $result["title"]
             if (this.readyState == 4 && this.status == 200) {
                 loc = this.responseText;
                 if (loc == "") {
-                    console.log("Line 44 " + loc);
+                    //console.log("Line 44 " + loc);
                     displayed = rendition.display();
                 }else {
-                    console.log("Line 47 " + loc);
+                    //console.log("Line 47 " + loc);
                     displayed = rendition.display(loc);
                 }
 
@@ -87,7 +74,7 @@ $title = $result["title"]
         xhttp2.open("POST", "bookmark.php?id=<?php echo $book_id;?>&location=", true);
         xhttp2.send();
         //console.log(loc);
-        console.log("Line 56 " + loc);
+        //console.log("Line 56 " + loc);
         //displayed = rendition.display(loc);
 
 
@@ -147,10 +134,10 @@ $title = $result["title"]
 
             if ( Math.abs( xDiff ) > Math.abs( yDiff ) ) {/*most significant*/
                 if ( xDiff > 0 ) {
-                    console.log("Left Swipe");
+                    //console.log("Left Swipe");
                     rendition.next();
                 } else {
-                    console.log("Right Swipe");
+                    //console.log("Right Swipe");
                     rendition.prev();
                 }
             } else {
@@ -165,16 +152,16 @@ $title = $result["title"]
             yDown = null;
         };
         rendition.on('relocated', function(location){
-            console.log(location);
-            console.log("Line 81 " + rendition.currentLocation().start.cfi);
+            //console.log(location);
+            //console.log("Line 81 " + rendition.currentLocation().start.cfi);
             var xhttp;
             xhttp = new XMLHttpRequest();
             xhttp.onreadystatechange = function() {
                 if (this.readyState == 4 && this.status == 200) {
-                    console.log("Line 86 " + this.responseText);
+                    //console.log("Line 86 " + this.responseText);
                 }
             };
-            console.log("Line 89 Sending location " + rendition.currentLocation().start.cfi + " To database ")
+            //console.log("Line 89 Sending location " + rendition.currentLocation().start.cfi + " To database ")
             xhttp.open("POST", "bookmark.php?id=<?php echo $book_id;?>&location="+rendition.currentLocation().start.cfi, true);
             xhttp.send();
         });

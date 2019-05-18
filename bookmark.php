@@ -2,7 +2,7 @@
 session_start();
 include("session.php");
 $book_id = mysqli_real_escape_string($conn, $_GET['id']);
-$user_id = $_SESSION['id'];
+$user_id = mysqli_real_escape_string($conn, $_SESSION['id']);
 $location = mysqli_real_escape_string($conn, $_GET['location']);
 if ($location == "") {
     //get bookmark

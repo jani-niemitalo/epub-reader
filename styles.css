@@ -45,8 +45,7 @@
 
 .dark {
 	background: #333;
-	color: #fff !important;
-    //font-size: 140% !important;
+	color: #FFFDD0 !important;
 }
 
 #area{
@@ -56,7 +55,6 @@
   justify-self: center;
 }
 #info{
-    //margin-top: 50%;
     text-decoration: none;
     line-height: 10vw;
 
@@ -120,7 +118,7 @@
 .grid {
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-between;
+    justify-content: space-around;
     width: auto;
 }
 img {
@@ -132,7 +130,7 @@ img {
 
 body {
  background-color: #333;
- color: #fff;
+ color: #FFFDD0;
  margin: 0;
  display: grid;
 
@@ -161,7 +159,7 @@ body {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
-    color: #fff;
+    color: #FFFDD0;
     //grid-template-columns: repeat(3, 1fr);
 }
 .book_image{
@@ -173,13 +171,21 @@ body {
     margin-top: 0;
     margin-bottom: 0;
     margin-left: 10%;
-    width: 30% ;
+    width: 400px;
     display: grid;
 
 }
 #button{
     display: inline;
 
+}
+
+.button {
+    border-style: outset;
+    border-color: #333;
+}
+.button:hover {
+    background-color: #333;
 }
 
 #login{
@@ -194,46 +200,17 @@ body {
 }
 
 #recent_lib{
-  justify-content: start;
+    justify-content: start;
 }
-@media (max-width:800px) {
-    .bookViewWrapper > .content{
-        width: 100%;
-    }
-    #recent_lib{
-      justify-content: space-around;
-    }
-    .content_title{
-        font-size: 4vw;
-        line-height: 80%;
-        height: 2em;
-    }
-    .content_subtitle{
-        font-size: 8vw;
-    }
-    .cover{
-        width: 100%;
-        height: 100%;
-    }
-
-    .main_img{
-        height: 90%;
-    }
-    .book_image{
-        max-width: 100%;
-    }
-    .book_info{
-        width: 100% ;
-
-    }
-    .content{
-        width: 45%;
-        //height: 35%;
-        margin: 0;
-        margin-top: 10%;
-        margin-bottom: 10%;
-    }
+#recent_lib_sub {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    flex-direction: row;
+    overflow: hidden;
+    max-height: 950px;
 }
+
 .book_info_ta{
     width: auto;
     overflow: auto;
@@ -245,3 +222,42 @@ body {
     width: 5em;
     margin-right: 10%
 }
+
+/* The Modal (background) */
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    padding-top: 100px; /* Location of the box */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.5); /* Black w/ opacity */
+}
+
+/* Modal Content */
+.modal-content {
+    background-color: #222;
+    color: #222222;
+    margin: auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+}
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+

@@ -17,6 +17,7 @@ $client->addScope("email");
 $payload = $client->verifyIdToken($id_token);
 if ($payload) {
     $userid = $payload['sub'];
+    $userid = mysqli_real_escape_string($conn, $userid);
     $checkIfUser = $conn->query("SELECT * FROM users WHERE google_id = $userid limit 1");
     if (mysqli_num_rows($checkIfUser) > 0) {
         $var = $checkIfUser->fetch_assoc();
@@ -29,8 +30,10 @@ if ($payload) {
         echo "doesn't";
         //create user here to database
         $email = $_POST["email"];
+        $email = mysqli_real_escape_string($conn, $email);
         $password = "";
         $name = $_POST["name"];
+        $name = mysqli_real_escape_string($conn, $name);
         $google_id= $userid;
         $sqlInsert = "REPLACE into users (email, password, name, google_id) values ('" .$email. "','-','" .$name. "', '" .$google_id. "');";
         $sqlResult = $conn->query($sqlInsert);
