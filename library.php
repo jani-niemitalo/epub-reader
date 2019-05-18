@@ -13,11 +13,19 @@ include("session.php");
     <link rel="stylesheet" href="styles.css">
     <script type="text/javascript">
         var glob_ID = -1;
+
+        function closeModal(modal) {
+            document.getElementById("modal-content1").innerHTML = "";
+
+            modal.style.display = "none";
+        }
+
         function parseLibrary() {
             var xmlhttp = new XMLHttpRequest();
             xmlhttp.onreadystatechange = function () {
                 if (this.readyState == 4 && this.status == 200) {
-                    document.getElementById("result").innerHTML = "OK!";
+                    if (confirm("OK! Reload?"))
+                        location.reload();
                 }
             };
             xmlhttp.open("GET", "parseLibrary.php", true);
@@ -25,6 +33,7 @@ include("session.php");
 
 
         }
+
         function parse(id) {
             if (window.XMLHttpRequest) {
                 // code for IE7+, Firefox, Chrome, Opera, Safari
@@ -49,6 +58,7 @@ include("session.php");
         }
 
         function showResults() {
+
 
             var input = document.getElementById("search").value;
             if (window.XMLHttpRequest) {
@@ -94,12 +104,8 @@ include("session.php");
             modal.style.display = "block";
         }
 
-
-
-
-
         function reader(id) {
-            window.location.replace("reader.php?id="+ id);
+            window.location.replace("reader.php?id=" + id);
         }
 
         var initialData = "";
@@ -216,16 +222,17 @@ include("session.php");
 <body>
 <div id="header">
     <?php
-        if (enumToInt($_SESSION["perm_lvl"]) >= 2)
+    if (enumToInt($_SESSION["perm_lvl"]) >= 2) {
         echo "    <button id=\"parseButton\" type=\"button\" style=\"
           height: 100%;\" onclick=\"parseLibrary()\">Change Content
-        </button>"
+        </button>";
+    }else
+        echo '<div></div>';
     ?>
 
-    <div id="result" style="color: #fff; height: 100%;">
-    </div>
+
     <input type="text" id="search" placeholder="Search" style="height: 90%;">
-    <button type="submit" style="height: 100%;" onclick="showResults()">Search</button>
+
     <button type="logout" style="height: 100%;" onclick="logout()">Log out</button>
     <script>
         function logout() {
@@ -246,14 +253,14 @@ include("session.php");
                       ORDER BY ts DESC limit 6";
     $latest = $conn->query($latest_query);
     if ($latest->num_rows > 0) {
-        echo   '<div class="separator" >
+        echo '<div class="separator" >
                     <h1 class="separator_t" > Recently read </h1 >
                 </div >
                 <div id="recent_lib_sub">';
-      while ($row2 = $latest->fetch_assoc()) {
-          echo coverFN2($row2, "reader");
-      }
-      echo '</div>';
+        while ($row2 = $latest->fetch_assoc()) {
+            echo coverFN2($row2, "reader");
+        }
+        echo '</div>';
     }
     ?>
 </div>
@@ -261,7 +268,7 @@ include("session.php");
     <h1 class="separator_t"> All Books </h1>
 </div>
 <div class="grid">
-<?php
+    <?php
 
     $booksQuery = "SELECT * FROM books";
     $booksQueryResult = $conn->query($booksQuery);
@@ -296,16 +303,38 @@ include("session.php");
     var span = document.getElementsByClassName("close")[0];
 
     // When the user clicks on <span> (x), close the modal
-    span.onclick = function() {
-        modal.style.display = "none";
+    span.onclick = function () {
+        closeModal(modal);
     }
 
     // When the user clicks anywhere outside of the modal, close it
-    window.onclick = function(event) {
+    window.onclick = function (event) {
         if (event.target == modal) {
-            modal.style.display = "none";
+            closeModal(modal);
         }
     }
+    // Get the input field
+    var input = document.getElementById("search");
+
+    // Execute a function when the user releases a key on the keyboard
+    input.addEventListener("keyup", function(event) {
+        // Number 13 is the "Enter" key on the keyboard
+        if (event.key === "Enter") {
+            // Cancel the default action, if needed
+            event.preventDefault();
+            // Trigger the button element with a click
+            //document.getElementById("myBtn").click();
+            showResults();
+        }
+    });
+
+    window.addEventListener("keyup", function (event) {
+
+        if (event.key === "Escape"){
+            closeModal(modal);
+        }
+    });
+
 </script>
 </body>
 
