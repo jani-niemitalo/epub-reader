@@ -37,14 +37,12 @@ $result1 = $conn->query($checkQuery);
 if ($result1 == "") {
     $checkQuery2 = "ALTER TABLE books add COLUMN `uploader` int(10)";
     $booksQueryResult1 = $conn->query($checkQuery2);
-    echo $booksQueryResult1;
 }
 
 
 foreach (getDirContents('uploads/' . $userID) as $v) {
     if (strripos($v, '.epub', -0)) {
         if ($v == "") {
-            echo "Found empty Path, skipping: " . $v . "<br/>";
             continue;
         }
         $target_dir = "ebook/userfiles/" . $userID . "/";
@@ -52,7 +50,6 @@ foreach (getDirContents('uploads/' . $userID) as $v) {
             if (!is_dir($target_dir))
                 mkdir($target_dir, 0755, true);
         } catch (Exception $e) {
-            echo $e;
             exit($e);
         }
 
