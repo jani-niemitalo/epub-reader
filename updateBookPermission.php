@@ -11,6 +11,7 @@ require_once ("session.php");
 require_once ("enumToInt.php");
 if (enumToInt($_SESSION["perm_lvl"]) < 3) {
     header("Location: library.php");
+    exit("Permission Denied");
 }
 $id = mysqli_real_escape_string($conn, $_POST["id"]);
 $value = mysqli_real_escape_string($conn, $_POST["value"]);

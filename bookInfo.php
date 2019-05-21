@@ -69,11 +69,11 @@ if ($authorized) {
                       <option value="admin"       '.$bookPerm4.'>4</option>
                   </select> 
                 </div>';
-}
-if (htmlspecialchars($db_book["series"]) == "") {
+    if (htmlspecialchars($db_book["series"]) == "") {
 
-    $series = '<div id="button" class="button" onclick="querySeries(' . $db_book["id"] . ')">Query series info</div>';
+        $series = '<div id="button" class="button" onclick="querySeries(' . $db_book["id"] . ')" style="font-size: medium">Query series info</div>';
 
+    }
 }
 
 

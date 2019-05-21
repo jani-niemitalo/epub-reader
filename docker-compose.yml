@@ -5,6 +5,9 @@ services:
         container_name: epub-reader
         volumes:
             - .:/var/www/html/
+            - ./php-ini:/usr/local/etc/php/custom.d
+        environment:
+            PHP_INI_SCAN_DIR: "/usr/local/etc/php/custom.d:/usr/local/etc/php/conf.d"
         ports:
             - "8888:80"
         depends_on:
@@ -18,4 +21,3 @@ services:
             - "MYSQL_PASSWORD=kek"
         ports:
             - "3306:3306"
-

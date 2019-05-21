@@ -26,7 +26,7 @@ function coverFN2($db_book, $target)
                     " . $db_book["title"] . "
                 </b>
                 </div>" .
-                "<img class=\"main_img\"src=\"" . $imgPath . "\">
+                "<img class=\"main_img\"src=\"" . $imgPath . "\" alt='Thumbnail of the book ".$db_book["title"]."'>
                 <div class=\"shadow\"></div>
             </div>
         </div>";

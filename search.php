@@ -20,6 +20,8 @@ if ($resultFromSearch->num_rows > 0) {
     while ($row_s = $resultFromSearch->fetch_assoc()) {
         if (enumToInt($row_s["permission_lvl"]) <= enumToInt($_SESSION["perm_lvl"]))
             echo coverFN2($row_s, "info");
+        else if ($row_s["uploader"] == $_SESSION["id"])
+            echo coverFN2($row_s, "info");
     }
 }
 else{

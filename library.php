@@ -6,7 +6,7 @@ session_start();
 include("session.php");
 ?>
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <title>Epub-Reader - <?php require("version.txt") ?></title>
     <meta charset="utf-8"/>
@@ -16,7 +16,6 @@ include("session.php");
 
         function closeModal(modal) {
             document.getElementById("modal-content1").innerHTML = "";
-
             modal.style.display = "none";
         }
 
@@ -102,6 +101,10 @@ include("session.php");
             xmlhttp.open("GET", "bookInfo.php?id=" + id, true);
             xmlhttp.send();
             modal.style.display = "block";
+        }
+
+        function dropDown() {
+            modal2.style.display = "block";
         }
 
         function reader(id) {
@@ -221,19 +224,15 @@ include("session.php");
 </head>
 <body>
 <div id="header">
-    <?php
-    if (enumToInt($_SESSION["perm_lvl"]) >= 2) {
-        echo "    <button id=\"parseButton\" type=\"button\" style=\"
-          height: 100%;\" onclick=\"parseLibrary()\">Change Content
-        </button>";
-    }else
-        echo '<div></div>';
-    ?>
-
+    <div></div>
 
     <input type="text" id="search" placeholder="Search" style="height: 90%;">
 
-    <button type="logout" style="height: 100%;" onclick="logout()">Log out</button>
+    <div type="button" class="button" id="menu-icon" style="height: 100%; font-size: 200%" onclick="dropDown()">
+        <span class="line"></span>
+        <span class="line"></span>
+        <span class="line"></span>
+    </div>
     <script>
         function logout() {
             window.location = "logout.php"
@@ -276,12 +275,11 @@ include("session.php");
     if ($booksQueryResult->num_rows > 0) {
         // output data of each row
         while ($row = $booksQueryResult->fetch_assoc()) {
-            if (enumToInt($row["permission_lvl"]) <= enumToInt($_SESSION["perm_lvl"])) {
-                $count++;
-                //echo coverFN($row);
-                echo coverFN2($row, 'info');
 
-            }
+            if (enumToInt($row["permission_lvl"]) <= enumToInt($_SESSION["perm_lvl"]))
+                echo coverFN2($row, 'info');
+            else if ($row["uploader"] == $user_id)
+                echo coverFN2($row, 'info');
         }
         //echo $count;
     } else {
@@ -292,27 +290,34 @@ include("session.php");
 </div>
 <div id="myModal" class="modal">
     <div class="modal-content" id="modal-content1">
-        <span class="close">&times;</span>
+    </div>
+</div>
+<div id="dropDown" class="modal">
+    <div class="modal-content" id="modal-content2">
+        <div class="button" onclick="window.location = 'upload.php'">Upload</div>
+        <div class="button" onclick="alert('This does nothing yet, but you can keep clicking it OwO')" >Settings</div>
+        <div class="button" onclick="logout()" >Logout</div>
+        <?php
+        if (enumToInt($_SESSION["perm_lvl"]) >= 2)
+            echo '<div id=\"parseButton\" class="button" onclick="parseLibrary()">Change Content</div>';
+        ?>
     </div>
 </div>
 <script>
     // Get the modal
     var modal = document.getElementById("myModal");
-
-    // Get the <span> element that closes the modal
-    var span = document.getElementsByClassName("close")[0];
-
-    // When the user clicks on <span> (x), close the modal
-    span.onclick = function () {
-        closeModal(modal);
-    }
+    var modal2 = document.getElementById("dropDown");
 
     // When the user clicks anywhere outside of the modal, close it
     window.onclick = function (event) {
         if (event.target == modal) {
             closeModal(modal);
         }
-    }
+        if (event.target == modal2)
+        {
+            closeModal(modal2);
+        }
+    };
     // Get the input field
     var input = document.getElementById("search");
 
@@ -332,6 +337,7 @@ include("session.php");
 
         if (event.key === "Escape"){
             closeModal(modal);
+            closeModal(modal2);
         }
     });
 
