@@ -4,6 +4,10 @@ require_once("enumToInt.php");
 session_start();
 require_once("session.php");
 require_once("upload_parser.php");
+if (enumToInt($_SESSION["perm_lvl"]) < 1) {
+    header("Location: library.php");
+    exit("Permission Denied");
+}
 
 $userID = "";
 $userID .= (string)mysqli_real_escape_string($conn, $_SESSION["id"]);
@@ -11,6 +15,7 @@ $target_dir = "uploads/" . $userID . "/";
 echo "<script>var global_target = \"" . $target_dir . "\";</script>";
 $target_file_list = array();
 $uploadOk = 1;
+
 try {
     if (!is_dir($target_dir))
         mkdir($target_dir, 0755, true);

@@ -294,7 +294,11 @@ include("session.php");
 </div>
 <div id="dropDown" class="modal">
     <div class="modal-content" id="modal-content2">
-        <div class="button" onclick="window.location = 'upload.php'">Upload</div>
+        <?php
+        if (enumToInt($_SESSION["perm_lvl"]) > 0) {
+            echo '<div class="button" onclick="window.location = \'upload.php\'">Upload</div>';
+        }
+        ?>
         <div class="button" onclick="alert('This does nothing yet, but you can keep clicking it OwO')" >Settings</div>
         <div class="button" onclick="logout()" >Logout</div>
         <?php
