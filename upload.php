@@ -4,6 +4,7 @@ require_once("enumToInt.php");
 session_start();
 require_once("session.php");
 require_once("upload_parser.php");
+set_time_limit(120);
 if (enumToInt($_SESSION["perm_lvl"]) < 1) {
     header("Location: library.php");
     exit("Permission Denied");

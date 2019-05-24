@@ -71,15 +71,49 @@ foreach (getDirContents('uploads/' . $userID) as $v) {
 //        echo "Found empty ISBN, skipping: " . $v . "<br/>";
 //        continue;
 //    }
-
+            $query_title   = mysqli_real_escape_string($conn, $title);
+            $query_author   = mysqli_real_escape_string($conn, $author);
             $query_isbn   = mysqli_real_escape_string($conn, $var);
+            $query_series   = mysqli_real_escape_string($conn, $series);
             $query_path   = mysqli_real_escape_string($conn, $v);
-            $query_title  = mysqli_real_escape_string($conn, $title);
-            $query_author = mysqli_real_escape_string($conn, $author);
-            $query_series =  mysqli_real_escape_string($conn, $series);
+
+            $sqlSelect = "SELECT * from books where path = '".$query_path."'";
+            $sqlSelect = $conn->query($sqlSelect);
+            if (mysqli_num_rows($sqlSelect) > 0){
+                $fetch = $sqlSelect->fetch_assoc();
+                if ($fetch["isbn"] == NULL)
+                    $query_isbn   = mysqli_real_escape_string($conn, $var);
+                else
+                    $query_isbn = $fetch["isbn"];
+                if ($fetch["title"] == NULL)
+                    $query_title   = mysqli_real_escape_string($conn, $title);
+                else
+                    $query_title = $fetch["title"];
+                if ($fetch["isbn"] == NULL)
+                    $query_author   = mysqli_real_escape_string($conn, $author);
+                else
+                    $query_author = $fetch["author"];
+                if ($fetch["isbn"] == NULL)
+                    $query_series   = mysqli_real_escape_string($conn, $series);
+                else
+                    $query_series = $fetch["series"];
 
 
-            $sqlInsert = "  REPLACE INTO books (isbn, path, title, author, series, permission_lvl, uploader) VALUES ('" . $query_isbn . "', '" . $query_path . "', '" . $query_title . "','" . $query_author . "','" . $query_series . "', 'uploader' , " . $userID . ")";
+
+                $sqlInsert = "  UPDATE books SET 
+                    isbn='".$query_isbn."', 
+                    path='".$query_path."', 
+                    title='".$query_title."', 
+                    author='".$query_author."', 
+                    series='".$query_series."', 
+                    permission_lvl='uploader', 
+                    uploader='".$userID."'
+                    WHERE id='".$fetch["id"]."'" ;
+            }
+            else{
+                $sqlInsert = "  INSERT INTO books (isbn, path, title, author, series, permission_lvl, uploader) VALUES ('" . $query_isbn . "', '" . $query_path . "', '" . $query_title . "','" . $query_author . "','" . $query_series . "', 'uploader' , " . $userID . ")";
+
+            }
             //echo $sqlInsert . "<br>";
             $sqlResult = $conn->query($sqlInsert);
             if ($sqlResult) {
@@ -96,7 +130,18 @@ foreach (getDirContents('uploads/' . $userID) as $v) {
                         $tn_path = "ebook/tumbnails/" . $id . "." . mime2ext($img['mime']);
                         //echo("<br>BOOK TN_Path = " . $tn_path);
                         $conn->query("UPDATE books SET tn_path = '" . $tn_path . "' WHERE id = $id");
+
                         file_put_contents($tn_path, $img['data']);
+
+                        /*try {
+                            $api = new ImageOptim\API("kxvmgbkkbj");
+                            $imageData = $api->imageFromPath($tn_path)->resize(250, 340, 'fit')->getBytes();
+
+                        }catch (Exception $e){
+                            echo $e;
+                        }
+
+                        file_put_contents($tn_path, $imageData);*/
                         header("Location: library.php");
                     }
                 }
