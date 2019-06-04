@@ -323,7 +323,13 @@ body {
     margin: auto;
     padding: 0px;
     border: 1px solid #888;
-    width: 250px;
+    width: auto;
+
+}
+
+#seriesButton {
+    text-align: left;
+    padding: 3px;
 }
 
 #menu-icon {
