@@ -315,7 +315,7 @@ body {
 #modal-content3 {
     left: 0px;
     right: auto;
-    max-height: calc(100vh - 100px);
+    max-height: calc(100vh - 50px);
     overflow-y: auto;
     position: fixed;
 
