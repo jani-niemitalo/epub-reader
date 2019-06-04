@@ -1,8 +1,10 @@
 <?php
-//require_once("mysqlConnection.php");
 require_once("cover.php");
 require_once("enumToInt.php");
-session_start();
+if(!isset($_SESSION))
+{
+    session_start();
+}
 include("session.php");
 ?>
 <!DOCTYPE html>
@@ -56,10 +58,8 @@ include("session.php");
 
         }
 
-        function showResults() {
-
-
-            var input = document.getElementById("search").value;
+        function search(query) {
+            var input = query;
             if (window.XMLHttpRequest) {
                 // code for IE7+, Firefox, Chrome, Opera, Safari
                 xmlhttp = new XMLHttpRequest();
@@ -73,12 +73,23 @@ include("session.php");
                         "  <h1 class=\"separator_t\"> Search Results </h1>\n" +
                         "</div>";
                     document.getElementById("search_results").innerHTML += this.responseText;
+                    closeModal(modal3);
+                    closeModal(modal2);
+                    closeModal(modal);
+                    window.scrollTo(0, 0);
                 }
 
             }
             ;
             xmlhttp.open("GET", "search.php?q=" + input, true);
             xmlhttp.send();
+        }
+
+        function showResults() {
+
+
+            var input = document.getElementById("search").value;
+            search(input);
         }
 
 
@@ -103,8 +114,11 @@ include("session.php");
             modal.style.display = "block";
         }
 
-        function dropDown() {
+        function contMenu() {
             modal2.style.display = "block";
+        }
+        function seriesDD() {
+            modal3.style.display = "block";
         }
 
         function reader(id) {
@@ -220,15 +234,24 @@ include("session.php");
             initialData = lel;
         }
 
+        function searchSeries(series) {
+            search(series);
+
+        }
+
     </script>
 </head>
 <body>
 <div id="header">
-    <div></div>
+    <div type="button" class="button" id="menu-icon" style="height: 100%; font-size: 200%" onclick="seriesDD()">
+        <span class="line"></span>
+        <span class="line"></span>
+        <span class="line"></span>
+    </div>
 
     <input type="text" id="search" placeholder="Search" style="height: 90%;">
 
-    <div type="button" class="button" id="menu-icon" style="height: 100%; font-size: 200%" onclick="dropDown()">
+    <div type="button" class="button" id="menu-icon" style="height: 100%; font-size: 200%" onclick="contMenu()">
         <span class="line"></span>
         <span class="line"></span>
         <span class="line"></span>
@@ -285,14 +308,13 @@ include("session.php");
     } else {
         echo "0 results";
     }
-    $conn->close();
     ?>
 </div>
 <div id="myModal" class="modal">
     <div class="modal-content" id="modal-content1">
     </div>
 </div>
-<div id="dropDown" class="modal">
+<div id="contMenu" class="modal">
     <div class="modal-content" id="modal-content2">
         <?php
         if (enumToInt($_SESSION["perm_lvl"]) > 0) {
@@ -307,10 +329,29 @@ include("session.php");
         ?>
     </div>
 </div>
+<div id="seriesDD" class="modal">
+    <div class="modal-content" id="modal-content3">
+        <?php
+        $seriesQuery = "select distinct series from books where series != \"\" order by series";
+        $q1 = $conn->query($seriesQuery);
+        if ($q1->num_rows > 0) {
+        while ($row = $q1->fetch_assoc()) {
+                echo '
+<div class="button" onclick="searchSeries(\''.$row["series"].'\')">
+    '.$row["series"].'
+</div>';
+
+            }
+        }
+
+        ?>
+    </div>
+</div>
 <script>
     // Get the modal
     var modal = document.getElementById("myModal");
-    var modal2 = document.getElementById("dropDown");
+    var modal2 = document.getElementById("contMenu");
+    var modal3 = document.getElementById("seriesDD");
 
     // When the user clicks anywhere outside of the modal, close it
     window.onclick = function (event) {
@@ -320,6 +361,10 @@ include("session.php");
         if (event.target == modal2)
         {
             closeModal(modal2);
+        }
+        if (event.target == modal3)
+        {
+            closeModal(modal3);
         }
     };
     // Get the input field
@@ -342,6 +387,7 @@ include("session.php");
         if (event.key === "Escape"){
             closeModal(modal);
             closeModal(modal2);
+            closeModal(modal3)
         }
     });
 
