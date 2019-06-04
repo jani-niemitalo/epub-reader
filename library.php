@@ -337,7 +337,7 @@ include("session.php");
         if ($q1->num_rows > 0) {
         while ($row = $q1->fetch_assoc()) {
                 echo '
-<div class="button" onclick="searchSeries(\''.$row["series"].'\')">
+<div class="button" id="seriesButton" onclick="searchSeries(\''.$row["series"].'\')">
     '.$row["series"].'
 </div>';
 
