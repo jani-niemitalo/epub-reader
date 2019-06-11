@@ -1,11 +1,15 @@
 <?php
 
-require_once("cover.php");
-require_once("enumToInt.php");
+require ("vendor/autoload.php");
+include_once ("cover.php");
+include_once ("enumToInt.php");
 session_start();
-require_once("session.php");
-require_once("epub.php");
-require_once("mime2ext.php");
+require_once ("session.php");
+include_once ("epub.php");
+include_once ("mime2ext.php");
+include_once ("log.php");
+include_once ("optimizeImage.php");
+
 
 if (enumToInt($_SESSION["perm_lvl"]) < 1) {
     header("Location: library.php");
@@ -132,24 +136,14 @@ foreach (getDirContents('uploads/' . $userID) as $v) {
                         $conn->query("UPDATE books SET tn_path = '" . $tn_path . "' WHERE id = $id");
 
                         file_put_contents($tn_path, $img['data']);
+                        optimizeImage($conn, $tn_path, $_SESSION["id"]);
 
-                        /*try {
-                            $api = new ImageOptim\API("kxvmgbkkbj");
-                            $imageData = $api->imageFromPath($tn_path)->resize(250, 340, 'fit')->getBytes();
-
-                        }catch (Exception $e){
-                            echo $e;
-                        }
-
-                        file_put_contents($tn_path, $imageData);*/
+                        linLog($conn, "[OK] Uploaded: " . $query_title, $_SESSION["id"]);
                         header("Location: library.php");
                     }
                 }
-                //echo "[OK] " . $var. "<br/>";
             } else {
-                //echo "[ERR] " . $var . "<br/>";
-                echo $conn->error . "<br/>";
-
+                linLog($conn,"[ERROR!] ". $conn->error, $_SESSION["id"]);
             }
         }
     }

@@ -1,8 +1,9 @@
 <?php
-require_once('epub.php');
+include_once ('epub.php');
 session_start();
 require_once ("session.php");
-require_once ("enumToInt.php");
+include_once ("enumToInt.php");
+
 if (enumToInt($_SESSION["perm_lvl"]) < 3) {
     header("Location: library.php");
 }

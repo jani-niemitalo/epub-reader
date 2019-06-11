@@ -10,11 +10,13 @@
     {
         if ($string == "guest")
             return 0;
-        if ($string == "user")
+        else if ($string == "user")
             return 1;
-        if ($string == "uploader")
+        else if ($string == "uploader")
             return 2;
-        if ($string == "admin")
+        else if ($string == "admin")
             return 3;
+        else
+            return -1;
 
     }

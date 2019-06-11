@@ -8,6 +8,7 @@
 require_once("mysqlConnection.php");
 require_once 'google-api-php-client-2.2.2/vendor/autoload.php';
 session_start();
+include_once ("log.php");
 
 $id_token = $_POST["idtoken"];
 //echo "ID Token = ".$id_token;
@@ -24,11 +25,10 @@ if ($payload) {
         $_SESSION['loggedin'] = true;
         $_SESSION['id'] = $var["id"];
         $_SESSION['perm_lvl'] = $var["permission_lvl"];
-        //create session here for user found in database
+        linLog($conn, "User " . $var["email"] . " logged in", $_SESSION["id"]);
+
     }
     else{
-        echo "doesn't";
-        //create user here to database
         $email = $_POST["email"];
         $email = mysqli_real_escape_string($conn, $email);
         $password = "";
@@ -38,12 +38,10 @@ if ($payload) {
         $sqlInsert = "REPLACE into users (email, password, name, google_id) values ('" .$email. "','-','" .$name. "', '" .$google_id. "');";
         $sqlResult = $conn->query($sqlInsert);
         if ($sqlResult){
-            //echo "[OK]". $sqlInsert;
-            //$_SESSION['loggedin'] = true;
+            linLog($conn, "User " . $email . "created", $_SESSION["id"]);
         }
         else{
-            echo "[ERR]". $sqlInsert;
-            echo $conn->error;
+            linLog($conn, "[ERR]". $sqlInsert . " ". $conn->error, $_SESSION["id"]);
         }
     }
 
