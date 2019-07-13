@@ -14,6 +14,24 @@ $booksQuery = "SELECT * FROM books WHERE id=$book_id";
 $booksQueryResult = $conn->query($booksQuery);
 $db_book = $booksQueryResult->fetch_assoc();
 
+$query1 = "SELECT * FROM books where series_i = ".($db_book["series_i"] +1)." AND series = '". $db_book["series"]."'";
+$query2 = "SELECT * FROM books where series_i = ".($db_book["series_i"] -1)." AND series = '". $db_book["series"]."'";
+
+$book_next = $conn->query($query1);
+$book_next_id = -1;
+if ($book_next->num_rows > 0) {
+    while ($row = $book_next->fetch_assoc()) {
+        $book_next_id = $row["id"];
+    }
+}
+
+$book_prev_id = -1;
+$book_prev = $conn->query($query2);
+if ($book_prev->num_rows > 0) {
+    while ($row = $book_prev->fetch_assoc()) {
+        $book_prev_id = $row["id"];
+    }
+}
 try {
     $epub = new EPub($db_book["path"]);
 } catch (Exception $e) {
@@ -76,40 +94,46 @@ if ($authorized) {
     }
 }
 
+$str1 = '<div class="fullHeightButton" onclick="info(' . $book_prev_id . ')"></div>';
+$str2 = '<div class="fullHeightButton" onclick="info(' . $book_next_id . ')"></div>';
 
-echo /*'
-<span class="close" onclick="function f() {
-  var modal2 = document.getElementById("myModal");
-  modal2.style.display = "none";
-}">&times;</span>*/
-'<div class="bookViewWrapper">
-' . coverFN2($db_book, "reader") . '
-    <div class="book_info">
-        <div class="book_info_ta">
-            <h3 class="book_info_H3">Title</h3>
-            ' . $Title . '
+if ($book_prev_id === -1)
+    $str1 = "";
+if ($book_next_id === -1)
+    $str2 = "";
+echo
+'<div class="BVW_Wrapper">
+    '.$str1.'
+    <div class="bookViewWrapper">
+    ' . coverFN2($db_book, "reader") . '
+        <div class="book_info">
+            <div class="book_info_ta">
+                <h3 class="book_info_H3">Title</h3>
+                ' . $Title . '
+            </div>
+            
+            <div class="book_info_ta">
+                <h3 class="book_info_H3">Genre </h3> ' . htmlspecialchars(join($epub->Subjects())) . '
+            </div>
+            
+            <div class="book_info_ta">
+                <h3 class="book_info_H3">Publisher </h3> ' . htmlspecialchars($epub->Publisher()) . '
+            </div>
+            
+            <div class="book_info_ta">
+                <h3 class="book_info_H3">ISBN </h3>
+                ' . $ISBN . '
+            </div>
+            
+            <div class="book_info_ta">
+                <h3 class="book_info_H3">Series </h3>
+                ' . $series . '
+            </div>
+            '.$permLVL.'        
         </div>
-        
-        <div class="book_info_ta">
-            <h3 class="book_info_H3">Genre </h3> ' . htmlspecialchars(join($epub->Subjects())) . '
+        <div class="description">
+            '.$epub->Description() .'
         </div>
-        
-        <div class="book_info_ta">
-            <h3 class="book_info_H3">Publisher </h3> ' . htmlspecialchars($epub->Publisher()) . '
-        </div>
-        
-        <div class="book_info_ta">
-            <h3 class="book_info_H3">ISBN </h3>
-            ' . $ISBN . '
-        </div>
-        
-        <div class="book_info_ta">
-            <h3 class="book_info_H3">Series </h3>
-            ' . $series . '
-        </div>
-        '.$permLVL.'        
     </div>
-    <div class="description">
-        '.$epub->Description() .'
-    </div>
+'.$str2.'
 </div>';

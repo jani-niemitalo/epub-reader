@@ -73,6 +73,7 @@
 
 }
 
+
 .arrow {
     color: transparent;
     margin-top: 50%;
@@ -173,7 +174,9 @@ body {
     flex-direction: row;
     flex-wrap: wrap;
     color: #FFFDD0;
-/ / grid-template-columns: repeat(3, 1 fr);
+    padding: 20px;
+    width: 100%;
+    justify-content: space-around;
 }
 
 .book_image {
@@ -182,11 +185,7 @@ body {
 }
 
 .book_info {
-    margin: auto;
-    margin-top: 0;
-    margin-bottom: 0;
-    margin-left: 10%;
-    width: 400px;
+    max-width: 400px;
     display: grid;
 
 }
@@ -280,6 +279,30 @@ body {
     min-height: 150px;
     max-height: 80vh;
     overflow-y: hidden;
+}
+
+
+#modal-content1 {
+    padding: 0px;
+    overflow: auto;
+}
+.BVW_Wrapper {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+
+}
+
+.fullHeightButton {
+    background-color: #000;
+    width: 10%;
+    border-style: inset;
+    border-color: #111;
+}
+.fullHeightButton:hover {
+    border-style: outset;
+    background-color: #111;
 }
 
 #contMenu {
