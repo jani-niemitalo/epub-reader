@@ -14,8 +14,8 @@ $booksQuery = "SELECT * FROM books WHERE id=$book_id";
 $booksQueryResult = $conn->query($booksQuery);
 $db_book = $booksQueryResult->fetch_assoc();
 
-$query1 = "SELECT * FROM books where series_i = ".($db_book["series_i"] +1)." AND series = '". $db_book["series"]."'";
-$query2 = "SELECT * FROM books where series_i = ".($db_book["series_i"] -1)." AND series = '". $db_book["series"]."'";
+$query1 = "SELECT * FROM books where series_i = " . ($db_book["series_i"] + 1) . " AND series = '" . $db_book["series"] . "'";
+$query2 = "SELECT * FROM books where series_i = " . ($db_book["series_i"] - 1) . " AND series = '" . $db_book["series"] . "'";
 
 $book_next = $conn->query($query1);
 $book_next_id = -1;
@@ -60,31 +60,28 @@ $permLVL = "";
 
 
 if ($authorized) {
-    $Title = '<input 
-                id="Title" 
+    $Title = '<input id="Title" 
                 type="text" 
                 onfocus="saveInitialValue(`Title`)"
                 onfocusout="updateData(`Title`, ' . $db_book["id"] . ')"
                 value="' . htmlspecialchars($db_book["title"]) . '">';
-    $ISBN = '<input 
-                id="ISBN" 
+    $ISBN = '<input id="ISBN" 
                 type="text" 
                 onfocus="saveInitialValue(`ISBN`)"
                 onfocusout="updateData(`ISBN`, ' . $db_book["id"] . ')" 
                 value="' . htmlspecialchars($db_book["isbn"]) . '">';
-    $series = '<input 
-                id="series" 
+    $series = '<input id="series" 
                 type="text" 
                 onfocus="saveInitialValue(`series`)" 
                 onfocusout="updateData(`series`, ' . $db_book["id"] . ')"
                 value="' . htmlspecialchars($db_book["series"]) . '">';
     $permLVL = '<div>
                   <h3 class="book_info_H3">Permission LVL </h3>
-                  <select onchange="parse(        '.$db_book["id"].')" id="permSelector">
-                      <option value="guest"       '.$bookPerm1.'>1</option>
-                      <option value="user"        '.$bookPerm2.'>2</option>
-                      <option value="uploader"    '.$bookPerm3.'>3</option>
-                      <option value="admin"       '.$bookPerm4.'>4</option>
+                  <select onchange="parse(        ' . $db_book["id"] . ')" id="permSelector">
+                      <option value="guest"       ' . $bookPerm1 . '>1</option>
+                      <option value="user"        ' . $bookPerm2 . '>2</option>
+                      <option value="uploader"    ' . $bookPerm3 . '>3</option>
+                      <option value="admin"       ' . $bookPerm4 . '>4</option>
                   </select> 
                 </div>';
     if (htmlspecialchars($db_book["series"]) == "") {
@@ -98,12 +95,19 @@ $str1 = '<div class="fullHeightButton" onclick="info(' . $book_prev_id . ')"></d
 $str2 = '<div class="fullHeightButton" onclick="info(' . $book_next_id . ')"></div>';
 
 if ($book_prev_id === -1)
-    $str1 = "";
+    $str1 = '<div class="fullHeightButton" onclick="alert(`ERROR! Previous book not found, Is this the first book in series?`)"></div>';
 if ($book_next_id === -1)
+    $str2 = '<div class="fullHeightButton" onclick="alert(`ERROR! Next book not found, Is this the last book in series?`)"></div>';
+
+if ($book_prev_id === -1 && $book_next_id === -1) {
+    $str1 = "";
     $str2 = "";
+}
 echo
-'<div class="BVW_Wrapper">
-    '.$str1.'
+    '<div class="BVW_Wrapper">
+    ' . $str1 . '
+    <div class="BVW_Wrapper_Layer2">
+    <div class="seriesTitleBar">' . $db_book["series"] . '</div>
     <div class="bookViewWrapper">
     ' . coverFN2($db_book, "reader") . '
         <div class="book_info">
@@ -129,11 +133,12 @@ echo
                 <h3 class="book_info_H3">Series </h3>
                 ' . $series . '
             </div>
-            '.$permLVL.'        
+            ' . $permLVL . '        
         </div>
         <div class="description">
-            '.$epub->Description() .'
+            ' . $epub->Description() . '
         </div>
     </div>
-'.$str2.'
+    </div>
+' . $str2 . '
 </div>';
