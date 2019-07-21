@@ -14,7 +14,10 @@ $input = mysqli_real_escape_string($conn, $_GET['q']);
 $search_query = " SELECT * FROM books WHERE 
                                       title LIKE '%$input%' OR 
                                       author LIKE '%$input%' OR
-                                      series LIKE '%$input%'";
+                                      series LIKE '%$input%'
+                                      ORDER BY 
+                                               series,
+                                               series_i";
 $resultFromSearch = $conn->query($search_query);
 if ($resultFromSearch->num_rows > 0) {
     while ($row_s = $resultFromSearch->fetch_assoc()) {
