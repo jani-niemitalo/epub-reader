@@ -5,7 +5,7 @@ if(!isset($_SESSION))
 {
     session_start();
 }
-//include("session.php");
+include("session.php");
 ?>
 <!DOCTYPE html>
 <html lang="en">
