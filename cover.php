@@ -18,7 +18,7 @@ function coverFN2($db_book, $target)
         $imgPath = "ebook/icons/sad.png";
     }
     $returnSTR =
-        "<div class=\"content\" onclick='".$target."' id='".$db_book["id"]."'> 
+        "<div class=\"content\" onclick='".$target."'> 
         " . $coverNotFound . "    
             <div class =\"cover\">
                 <div class=\"content_title\">

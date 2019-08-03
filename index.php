@@ -1,8 +1,7 @@
 <?php
 require_once("cover.php");
 require_once("enumToInt.php");
-if(!isset($_SESSION))
-{
+if (!isset($_SESSION)) {
     session_start();
 }
 include("session.php");
@@ -24,7 +23,7 @@ include("session.php");
     <meta name="msapplication-TileColor" content="#2b5797">
     <meta name="theme-color" content="#333">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-
+    <meta name="Description" content="Lists Ebooks available for you to read.">
 
     <title>Epub-Reader - <?php require("version.txt") ?></title>
     <meta charset="utf-8"/>
@@ -133,6 +132,7 @@ include("session.php");
         function contMenu() {
             modal2.style.display = "block";
         }
+
         function seriesDD() {
             modal3.style.display = "block";
         }
@@ -254,18 +254,51 @@ include("session.php");
             search(series);
 
         }
+        let num = 0;
+        let end = false;
+        function loadMoreBooks() {
+            if (!end) {
+                let element = document.getElementById("grid_list_id");
+
+                if (window.XMLHttpRequest) {
+                    // code for IE7+, Firefox, Chrome, Opera, Safari
+                    xmlhttp = new XMLHttpRequest();
+                } else {
+                    // code for IE6, IE5
+                    xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+                }
+                xmlhttp.onreadystatechange = function () {
+                    if (this.readyState == 4 && this.status == 200) {
+                        console.log(this.status);
+                        let res = this.responseText;
+                        element.innerHTML += this.responseText;
+                        num += 30;
+                    }
+                    if (this.readyState == 4 && this.status == 206) {
+                        console.log(this.status);
+                        element.innerHTML += this.responseText;
+                        end = true;
+                    }
+
+                }
+                ;
+                xmlhttp.open("GET", "getBooks.php?from=" + num, true);
+                xmlhttp.send();
+            }
+        }
+
 
     </script>
 </head>
 <body>
 <div id="header">
-    <div type="button" class="button" id="menu-icon" style="height: 100%; font-size: 200%" onclick="seriesDD()">
+    <div type="button" class="button" id="series-icon" style="height: 100%; font-size: 200%" onclick="seriesDD()">
         <span class="line"></span>
         <span class="line"></span>
         <span class="line"></span>
     </div>
 
-    <input type="text" id="search" placeholder="Search" style="height: 90%;">
+        <input aria-label="Search Query" type="text" id="search" placeholder="Search" style="height: 90%;">
 
     <div type="button" class="button" id="menu-icon" style="height: 100%; font-size: 200%" onclick="contMenu()">
         <span class="line"></span>
@@ -305,26 +338,8 @@ include("session.php");
 <div class="separator">
     <h1 class="separator_t"> All Books </h1>
 </div>
-<div class="grid">
-    <?php
+<div class="grid_list" id="grid_list_id">
 
-    $booksQuery = "SELECT * FROM books";
-    $booksQueryResult = $conn->query($booksQuery);
-    $count = 0;
-    if ($booksQueryResult->num_rows > 0) {
-        // output data of each row
-        while ($row = $booksQueryResult->fetch_assoc()) {
-
-            if (enumToInt($row["permission_lvl"]) <= enumToInt($_SESSION["perm_lvl"]))
-                echo coverFN2($row, 'info');
-            else if ($row["uploader"] == $user_id)
-                echo coverFN2($row, 'info');
-        }
-        //echo $count;
-    } else {
-        echo "0 results";
-    }
-    ?>
 </div>
 <div id="myModal" class="modal">
     <div class="modal-content" id="modal-content1">
@@ -337,8 +352,8 @@ include("session.php");
             echo '<div class="button" onclick="window.location = \'upload.php\'">Upload</div>';
         }
         ?>
-        <div class="button" onclick="alert('This does nothing yet, but you can keep clicking it OwO')" >Settings</div>
-        <div class="button" onclick="logout()" >Logout</div>
+        <div class="button" onclick="alert('This does nothing yet, but you can keep clicking it OwO')">Settings</div>
+        <div class="button" onclick="logout()">Logout</div>
         <?php
         if (enumToInt($_SESSION["perm_lvl"]) >= 2)
             echo '<div id=\"parseButton\" class="button" onclick="parseLibrary()">Change Content</div>';
@@ -351,11 +366,11 @@ include("session.php");
         $seriesQuery = "select distinct series from books where series != \"\" order by series";
         $q1 = $conn->query($seriesQuery);
         if ($q1->num_rows > 0) {
-        while ($row = $q1->fetch_assoc()) {
+            while ($row = $q1->fetch_assoc()) {
                 echo '
-<div class="button" id="seriesButton" onclick="searchSeries(\''.$row["series"].'\')">
-    '.$row["series"].'
-</div>';
+            <div class="button" class="seriesButton" onclick="searchSeries(\'' . $row["series"] . '\')">
+                ' . $row["series"] . '
+            </div>';
 
             }
         }
@@ -374,12 +389,10 @@ include("session.php");
         if (event.target == modal) {
             closeModal(modal);
         }
-        if (event.target == modal2)
-        {
+        if (event.target == modal2) {
             closeModal(modal2);
         }
-        if (event.target == modal3)
-        {
+        if (event.target == modal3) {
             closeModal(modal3);
         }
     };
@@ -387,7 +400,7 @@ include("session.php");
     var input = document.getElementById("search");
 
     // Execute a function when the user releases a key on the keyboard
-    input.addEventListener("keyup", function(event) {
+    input.addEventListener("keyup", function (event) {
         // Number 13 is the "Enter" key on the keyboard
         if (event.key === "Enter") {
             // Cancel the default action, if needed
@@ -400,23 +413,34 @@ include("session.php");
 
     window.addEventListener("keyup", function (event) {
 
-        if (event.key === "Escape"){
+        if (event.key === "Escape") {
             closeModal(modal);
             closeModal(modal2);
             closeModal(modal3)
         }
     });
+
+    /*
     if ('serviceWorker' in navigator) {
-        window.addEventListener('load', function() {
-            navigator.serviceWorker.register('/sw.js').then(function(registration) {
+        window.addEventListener('load', function () {
+            navigator.serviceWorker.register('/sw.js').then(function (registration) {
                 // Registration was successful
                 console.log('ServiceWorker registration successful with scope: ', registration.scope);
-            }, function(err) {
+            }, function (err) {
                 // registration failed :(
                 console.log('ServiceWorker registration failed: ', err);
             });
         });
-    }
+    }*/
+    document.addEventListener("DOMContentLoaded", function() {
+
+        loadMoreBooks();
+    });
+    window.onscroll = function(ev) {
+        if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight -100) {
+            loadMoreBooks();
+        }
+    };
 
 
 </script>

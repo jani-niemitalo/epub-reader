@@ -389,14 +389,33 @@ body {
 
 }
 
-#seriesButton {
+.seriesButton {
     text-align: left;
     padding: 3px;
+}
+
+#series-icon {
+    width: 50px;
+}
+
+#series-icon > .line {
+    margin-top: 10px;
+    margin-left: auto;
+    margin-right: auto;
+    width: 75%;
+    background-color: #fff;
+    height: 2px;
+    display: block;
+}
+
+#series-icon > .line + .line {
+    margin-top: 12px;
 }
 
 #menu-icon {
     width: 50px;
 }
+
 
 #menu-icon > .line {
     margin-top: 10px;

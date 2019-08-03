@@ -23,6 +23,8 @@ $title = $result["title"]
     <meta name="application-name" content="Epub-Reader">
     <meta name="msapplication-TileColor" content="#2b5797">
     <meta name="theme-color" content="#ffffff">
+    <meta name="Description" content="Displays the contents of an ebook.">
+
 
 
     <title><?php echo $title; ?></title>

@@ -17,6 +17,7 @@ session_start();
     <meta name="application-name" content="Epub-Reader">
     <meta name="msapplication-TileColor" content="#2b5797">
     <meta name="theme-color" content="#ffffff">
+    <meta name="Description" content="Login page.">
 
 
     <title>Epub-Reader - <?php require("version.txt") ?></title>
