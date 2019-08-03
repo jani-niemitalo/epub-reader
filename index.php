@@ -420,7 +420,7 @@ include("session.php");
         }
     });
 
-    /*
+    
     if ('serviceWorker' in navigator) {
         window.addEventListener('load', function () {
             navigator.serviceWorker.register('/sw.js').then(function (registration) {
@@ -431,7 +431,7 @@ include("session.php");
                 console.log('ServiceWorker registration failed: ', err);
             });
         });
-    }*/
+    }
     document.addEventListener("DOMContentLoaded", function() {
 
         loadMoreBooks();
